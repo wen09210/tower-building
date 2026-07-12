@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cubic+11&amp;family=DotGothic16&amp;family=Press+Start+2P&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#f0eee9;font-family:"Cubic 11","DotGothic16",system-ui,sans-serif}
+a{color:#2a78d6}a:hover{color:#1a5cb0}
+.dv-turn{padding:40px 44px 32px;border-bottom:1px solid rgba(0,0,0,.08);scroll-margin-top:16px}
+.dv-thd{display:flex;align-items:baseline;gap:10px;margin:0 0 20px}
+.dv-tid{font:600 10px ui-monospace,Menlo,monospace;padding:3px 7px;background:#1a1a1a;color:#fff;border-radius:4px;text-decoration:none}
+.dv-tname{font:600 13px/1.2 system-ui,sans-serif;color:#1a1a1a}
+.dv-opts{display:flex;flex-wrap:wrap;gap:36px;align-items:flex-start}
+.dv-opt{flex:none;display:flex;flex-direction:column;gap:9px;scroll-margin-top:16px}
+.dv-oid{font:600 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:rgba(0,0,0,.08);color:#1a1a1a;border-radius:5px;text-decoration:none}
+.dv-olabel{display:flex;align-items:baseline;gap:8px;font:400 12px/1.3 system-ui,sans-serif;color:rgba(0,0,0,.55)}
+.dv-card{max-width:100%;background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,.06);overflow:hidden}
+.dv-opt:target .dv-oid{background:#2a78d6;color:#fff}
+.dv-next{margin:22px 0 0;font:12px/1.5 system-ui,sans-serif;color:rgba(0,0,0,.5)}
+.cap{font:10.5px ui-monospace,Menlo,monospace;color:rgba(0,0,0,.5);text-align:center;margin-top:6px}
+</style>
+</helmet>
+
+<section class="dv-turn" id="t2">
+<div class="dv-thd"><a class="dv-tid" href="#t2">2</a><span class="dv-tname">依參考影片風格重製 — 日光工地像素風（橘黃方塊＋灰色高樓背景）</span></div>
+<div style="font:12px/1.6 system-ui,sans-serif;color:rgba(0,0,0,.6);max-width:760px;margin:0 0 24px">
+依截圖萃取的風格：淺灰都市高樓背景（帶藍色玻璃直條）、地面為工地（泥土地、圍籬、三角錐、樹）、橘黃色房間方塊配深藍大窗、黑色吊索與金色吊鉤、金幣／樓層計數 UI、Perfect 時的金色星星。取代 <a class="dv-oid" href="#1a">1a</a>／<a class="dv-oid" href="#1b">1b</a> 的配色方向。
+</div>
+<div class="dv-opts">
+
+<div class="dv-opt" id="2a">
+<div class="dv-olabel"><a class="dv-oid" href="#2a">2a</a>日光工地 — 忠實參考影片配色與場景</div>
+<div style="display:flex;gap:16px;flex-wrap:wrap">
+
+<!-- 2a 主選單 -->
+<div>
+<div class="dv-card" data-screen-label="2a 主選單" style="width:288px;height:512px;position:relative;overflow:hidden;background:#d2d6d8">
+  <!-- 背景高樓 -->
+  <div style="position:absolute;top:0;bottom:150px;left:-20px;width:120px;background:#b8bcbe"></div>
+  <div style="position:absolute;top:40px;bottom:150px;right:-10px;width:150px;background:repeating-linear-gradient(0deg,#a2a8ab 0 22px,#b4babd 22px 44px)"></div>
+  <div style="position:absolute;top:90px;bottom:150px;left:110px;width:70px;background:repeating-linear-gradient(90deg,#8fc0e4 0 9px,#c6e4f6 9px 18px,#b0b6b9 18px 30px)"></div>
+  <!-- 地面 -->
+  <div style="position:absolute;left:0;right:0;bottom:0;height:96px;background:#a06c30"></div>
+  <div style="position:absolute;bottom:30px;left:36px;width:14px;height:10px;background:#7c5222;transform:rotate(12deg);box-shadow:70px 22px 0 #7c5222,150px -6px 0 #7c5222,190px 26px 0 #7c5222"></div>
+  <!-- 圍籬 -->
+  <div style="position:absolute;bottom:96px;left:0;width:110px;height:52px;background:repeating-linear-gradient(45deg,transparent 0 6px,rgba(90,96,100,.55) 6px 8px),repeating-linear-gradient(-45deg,transparent 0 6px,rgba(90,96,100,.55) 6px 8px),#c8ccce;border-top:4px solid #6a7074"></div>
+  <div style="position:absolute;bottom:96px;right:0;width:120px;height:56px;background:repeating-linear-gradient(90deg,#d9b667 0 14px,#c39c4e 14px 17px);border-top:4px solid #a87f34"></div>
+  <!-- 樹 -->
+  <div style="position:absolute;bottom:148px;right:14px;width:56px;height:34px;background:#3f8030;box-shadow:-14px 12px 0 #56a340,16px 14px 0 #56a340,2px 24px 0 #3f8030"></div>
+  <!-- 三角錐 -->
+  <div style="position:absolute;bottom:98px;left:122px;width:14px;height:16px;background:linear-gradient(#e06a28 0 5px,#fff 5px 9px,#e06a28 9px 100%);clip-path:polygon(50% 0,100% 100%,0 100%)"></div>
+  <!-- 平台 + 地基樓 -->
+  <div style="position:absolute;bottom:76px;left:50%;transform:translateX(-50%);width:190px;height:22px;background:#aeb0b2;border-top:5px solid #cdcfd1;border-bottom:5px solid #838587"></div>
+  <div style="position:absolute;bottom:98px;left:50%;transform:translateX(-50%);width:86px;height:86px;background:linear-gradient(90deg,#f6bc48 0 9px,#eaa82c 9px 68%,#d98f1a 68% 88%,#b87814 88% 100%);border:3px solid #8a5a10;box-shadow:inset 0 -7px 0 rgba(122,74,8,.4);box-sizing:border-box">
+    <div style="position:absolute;top:2px;left:2px;right:2px;height:7px;background:linear-gradient(#eceeef,#b4b8ba)"></div>
+    <div style="position:absolute;top:16px;left:50%;transform:translateX(-50%);width:40px;height:60px;background:#24486a;border:3px solid #c4c8ca;box-sizing:border-box;display:flex;gap:3px;padding:3px"><div style="flex:1;background:#8ec2e8"></div><div style="flex:1;background:#a9d4f2"></div></div>
+  </div>
+  <!-- 吊索+鉤 -->
+  <div style="position:absolute;top:-6px;left:57%;width:5px;height:120px;background:#1c1c1c;transform:rotate(8deg);transform-origin:top center"></div>
+  <div style="position:absolute;top:112px;left:53.5%;width:14px;height:16px;border:4px solid #d8a828;border-top:none;border-radius:0 0 10px 10px"></div>
+  <!-- 標題 -->
+  <div style="position:absolute;top:170px;left:0;right:0;display:flex;flex-direction:column;align-items:center;gap:8px">
+    <div style="font-size:42px;line-height:1.05;color:#2c3e50;text-shadow:3px 3px 0 #fff,-2px -2px 0 #fff;text-align:center">疊疊大樓</div>
+    <div style="font-family:'Press Start 2P',monospace;font-size:8px;color:#b87c14;letter-spacing:2px">CITY BLOXX</div>
+  </div>
+  <!-- 按鈕 -->
+  <div style="position:absolute;left:0;right:0;bottom:126px;display:flex;flex-direction:column;align-items:center;gap:10px">
+    <div style="background:#e8a428;color:#3a2a08;border:3px solid #8a5a10;box-shadow:0 4px 0 #8a5a10;padding:10px 34px;font-size:18px;letter-spacing:4px">開始遊戲</div>
+    <div style="background:#fff;border:3px solid #6a7074;box-shadow:0 3px 0 #6a7074;padding:5px 12px;font-size:13px;color:#3a4148">♪ 音效：開</div>
+  </div>
+</div>
+<div class="cap">主選單 288×512</div>
+</div>
+
+<!-- 2a 遊戲中（起步・工地） -->
+<div>
+<div class="dv-card" data-screen-label="2a 遊戲中 工地" style="width:288px;height:512px;position:relative;overflow:hidden;background:#d2d6d8">
+  <div style="position:absolute;top:0;bottom:120px;left:-20px;width:110px;background:#b8bcbe"></div>
+  <div style="position:absolute;top:30px;bottom:120px;right:-16px;width:170px;background:repeating-linear-gradient(0deg,#a2a8ab 0 22px,#b4babd 22px 44px)"></div>
+  <div style="position:absolute;left:0;right:0;bottom:0;height:80px;background:#a06c30"></div>
+  <div style="position:absolute;bottom:22px;left:40px;width:14px;height:10px;background:#7c5222;transform:rotate(12deg);box-shadow:80px 18px 0 #7c5222,170px -2px 0 #7c5222"></div>
+  <div style="position:absolute;bottom:80px;left:0;width:100px;height:48px;background:repeating-linear-gradient(45deg,transparent 0 6px,rgba(90,96,100,.55) 6px 8px),repeating-linear-gradient(-45deg,transparent 0 6px,rgba(90,96,100,.55) 6px 8px),#c8ccce;border-top:4px solid #6a7074"></div>
+  <div style="position:absolute;bottom:80px;right:0;width:112px;height:52px;background:repeating-linear-gradient(90deg,#d9b667 0 14px,#c39c4e 14px 17px);border-top:4px solid #a87f34"></div>
+  <div style="position:absolute;bottom:106px;right:44px;width:22px;height:14px;background:#2c2c2c;border:2px solid #f2c218;display:flex;align-items:center;justify-content:center"><div style="width:12px;height:3px;background:#f2c218"></div></div>
+  <div style="position:absolute;bottom:128px;right:8px;width:52px;height:32px;background:#3f8030;box-shadow:-12px 10px 0 #56a340,14px 12px 0 #56a340"></div>
+  <div style="position:absolute;bottom:82px;left:112px;width:14px;height:16px;background:linear-gradient(#e06a28 0 5px,#fff 5px 9px,#e06a28 9px 100%);clip-path:polygon(50% 0,100% 100%,0 100%)"></div>
+  <div style="position:absolute;bottom:82px;right:96px;width:14px;height:16px;background:linear-gradient(#e06a28 0 5px,#fff 5px 9px,#e06a28 9px 100%);clip-path:polygon(50% 0,100% 100%,0 100%)"></div>
+  <!-- 平台+地基 -->
+  <div style="position:absolute;bottom:62px;left:50%;transform:translateX(-50%);width:180px;height:20px;background:#aeb0b2;border-top:5px solid #cdcfd1;border-bottom:5px solid #838587"></div>
+  <div style="position:absolute;bottom:82px;left:50%;transform:translateX(-50%);width:82px;height:82px;background:linear-gradient(90deg,#f6bc48 0 9px,#eaa82c 9px 68%,#d98f1a 68% 88%,#b87814 88% 100%);border:3px solid #8a5a10;box-shadow:inset 0 -7px 0 rgba(122,74,8,.4);box-sizing:border-box">
+    <div style="position:absolute;top:2px;left:2px;right:2px;height:6px;background:linear-gradient(#eceeef,#b4b8ba)"></div>
+    <div style="position:absolute;top:16px;left:50%;transform:translateX(-50%);width:38px;height:58px;background:#24486a;border:3px solid #c4c8ca;box-sizing:border-box;display:flex;gap:3px;padding:3px"><div style="flex:1;background:#8ec2e8"></div><div style="flex:1;background:#a9d4f2"></div></div>
+  </div>
+  <!-- 吊索（擺動中）+ 傾斜吊掛方塊 -->
+  <div style="position:absolute;top:-10px;left:56%;width:5px;height:130px;background:#1c1c1c;transform:rotate(13deg);transform-origin:top center"></div>
+  <div style="position:absolute;top:112px;left:40%;transform:rotate(-12deg)">
+    <div style="position:relative;width:78px;height:78px;background:linear-gradient(90deg,#f6bc48 0 9px,#eaa82c 9px 68%,#d98f1a 68% 88%,#b87814 88% 100%);border:3px solid #8a5a10;box-shadow:inset 0 -7px 0 rgba(122,74,8,.4);box-sizing:border-box;display:flex;align-items:center;justify-content:center;gap:6px">
+      <div style="position:absolute;top:2px;left:2px;right:2px;height:6px;background:linear-gradient(#eceeef,#b4b8ba)"></div>
+      <div style="position:absolute;top:-9px;left:50%;transform:translateX(-50%);width:10px;height:10px;background:#d8a828;border:2px solid #8a5a10;border-radius:50%"></div>
+      <div style="width:24px;height:36px;background:#24486a;border:2px solid #c4c8ca;box-sizing:border-box;display:flex;gap:2px;padding:2px;margin-top:6px"><div style="flex:1;background:#8ec2e8"></div><div style="flex:1;background:#a9d4f2"></div></div>
+      <div style="width:24px;height:36px;background:#24486a;border:2px solid #c4c8ca;box-sizing:border-box;display:flex;gap:2px;padding:2px;margin-top:6px"><div style="flex:1;background:#8ec2e8"></div><div style="flex:1;background:#a9d4f2"></div></div>
+    </div>
+  </div>
+  <!-- 掉落預示弧線 -->
+  <div style="position:absolute;top:230px;left:44%;width:26px;height:44px;border-left:5px solid rgba(255,255,255,.75);border-radius:20px 0 0 20px;transform:rotate(-14deg)"></div>
+  <!-- HUD -->
+  <div style="position:absolute;top:10px;right:12px;display:flex;align-items:center;gap:6px">
+    <div style="width:18px;height:18px;border-radius:50%;background:#f2b830;border:2px solid #b87c14;display:flex;align-items:center;justify-content:center;font-size:10px;color:#8a5a10">$</div>
+    <span style="font-size:16px;color:#3a4148;text-shadow:1px 1px 0 #fff">36</span>
+  </div>
+  <div style="position:absolute;bottom:12px;left:12px;display:flex;align-items:center;gap:6px">
+    <div style="background:#2c2c2c;border-radius:4px;padding:3px 8px;font-size:13px;color:#f2c218">001 F</div>
+  </div>
+  <div style="position:absolute;left:0;right:0;bottom:12px;text-align:center;font-size:12px;color:#3a4148;opacity:.7">點擊 放下方塊</div>
+</div>
+<div class="cap">遊戲中・起步（工地地面） 288×512</div>
+</div>
+
+<!-- 2a 遊戲中（高空 Perfect） -->
+<div>
+<div class="dv-card" data-screen-label="2a 高空 Perfect" style="width:288px;height:512px;position:relative;overflow:hidden;background:#cdd2d4">
+  <!-- 高空背景大樓 -->
+  <div style="position:absolute;inset:0;left:-10px;width:120px;background:repeating-linear-gradient(90deg,#8fc0e4 0 12px,#c6e4f6 12px 24px,#e6eaec 24px 44px)"></div>
+  <div style="position:absolute;top:0;bottom:0;right:-10px;width:110px;background:#a8adb0"></div>
+  <div style="position:absolute;top:60px;bottom:0;right:70px;width:64px;background:repeating-linear-gradient(90deg,#8fc0e4 0 10px,#c6e4f6 10px 20px,#b4babd 20px 34px)"></div>
+  <div style="position:absolute;top:180px;bottom:0;left:120px;width:56px;background:#babfc2"></div>
+  <!-- 塔（由下往上） -->
+  <div style="position:absolute;left:50%;bottom:-30px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center">
+    <!-- 最新一塊：Perfect 疊上 -->
+    <div style="position:relative;width:78px;height:78px;background:linear-gradient(90deg,#f6bc48 0 9px,#eaa82c 9px 68%,#d98f1a 68% 88%,#b87814 88% 100%);border:3px solid #f2c218;box-sizing:border-box;display:flex;align-items:center;justify-content:center;gap:6px;box-shadow:0 0 10px rgba(242,194,24,.8),inset 0 -7px 0 rgba(122,74,8,.4)">
+      <div style="position:absolute;top:2px;left:2px;right:2px;height:6px;background:linear-gradient(#eceeef,#b4b8ba)"></div>
+      <div style="width:24px;height:36px;background:#24486a;border:2px solid #c4c8ca;box-sizing:border-box;display:flex;gap:2px;padding:2px;margin-top:4px"><div style="flex:1;background:#8ec2e8"></div><div style="flex:1;background:#a9d4f2"></div></div>
+      <div style="width:24px;height:36px;background:#24486a;border:2px solid #c4c8ca;box-sizing:border-box;display:flex;gap:2px;padding:2px;margin-top:4px"><div style="flex:1;background:#8ec2e8"></div><div style="flex:1;background:#a9d4f2"></div></div>
+    </div>
+    <div style="position:relative;width:78px;height:78px;background:linear-gradient(90deg,#f6bc48 0 9px,#eaa82c 9px 68%,#d98f1a 68% 88%,#b87814 88% 100%);border:3px solid #8a5a10;box-shadow:inset 0 -7px 0 rgba(122,74,8,.4);box-sizing:border-box;display:flex;align-items:center;justify-content:center;gap:6px;margin-top:-3px;margin-left:5px">
+      <div style="position:absolute;top:2px;left:2px;right:2px;height:6px;background:linear-gradient(#eceeef,#b4b8ba)"></div>
+      <div style="width:24px;height:36px;background:#24486a;border:2px solid #c4c8ca;box-sizing:border-box;display:flex;gap:2px;padding:2px;margin-top:4px"><div style="flex:1;background:#8ec2e8"></div><div style="flex:1;background:#a9d4f2"></div></div>
+      <div style="width:24px;height:36px;background:#24486a;border:2px solid #c4c8ca;box-sizing:border-box;display:flex;gap:2px;padding:2px;margin-top:4px"><div style="flex:1;background:#8ec2e8"></div><div style="flex:1;background:#a9d4f2"></div></div>
+    </div>
+    <div style="position:relative;width:78px;height:78px;background:linear-gradient(90deg,#f6bc48 0 9px,#eaa82c 9px 68%,#d98f1a 68% 88%,#b87814 88% 100%);border:3px solid #8a5a10;box-shadow:inset 0 -7px 0 rgba(122,74,8,.4);box-sizing:border-box;display:flex;align-items:center;justify-content:center;gap:6px;margin-top:-3px;margin-left:-4px">
+      <div style="position:absolute;top:2px;left:2px;right:2px;height:6px;background:linear-gradient(#eceeef,#b4b8ba)"></div>
+      <div style="width:24px;height:36px;background:#24486a;border:2px solid #c4c8ca;box-sizing:border-box;display:flex;gap:2px;padding:2px;margin-top:4px"><div style="flex:1;background:#8ec2e8"></div><div style="flex:1;background:#a9d4f2"></div></div>
+      <div style="width:24px;height:36px;background:#24486a;border:2px solid #c4c8ca;box-sizing:border-box;display:flex;gap:2px;padding:2px;margin-top:4px"><div style="flex:1;background:#8ec2e8"></div><div style="flex:1;background:#a9d4f2"></div></div>
+    </div>
+  </div>
+  <!-- 金色星星 -->
+  <div style="position:absolute;bottom:246px;left:50%;width:7px;height:7px;background:#f2c218;transform:translateX(-50%);box-shadow:-56px 10px 0 #f2c218,58px 16px 0 #f2c218,-38px -22px 0 #ffd84a,42px -18px 0 #ffd84a,-70px -8px 0 #ffd84a,70px -4px 0 #f2c218"></div>
+  <!-- 吊索+鉤（收回） -->
+  <div style="position:absolute;top:-10px;left:52%;width:5px;height:96px;background:#1c1c1c;transform:rotate(-6deg);transform-origin:top center"></div>
+  <div style="position:absolute;top:82px;left:49.5%;width:14px;height:16px;border:4px solid #d8a828;border-top:none;border-radius:0 0 10px 10px"></div>
+  <!-- 小人跳傘 -->
+  <div style="position:absolute;top:220px;left:36px"><div style="width:16px;height:7px;background:#2a5a9a;border-radius:8px 8px 0 0"></div><div style="width:2px;height:5px;background:#333;margin:0 auto"></div><div style="width:6px;height:8px;background:#333;margin:0 auto"></div></div>
+  <!-- PERFECT -->
+  <div style="position:absolute;top:150px;left:0;right:0;display:flex;flex-direction:column;align-items:center;gap:4px">
+    <div style="font-family:'Press Start 2P',monospace;font-size:19px;color:#f2c218;text-shadow:3px 3px 0 #8a5a10,-2px -2px 0 #fff">PERFECT!</div>
+    <div style="font-size:16px;color:#3a4148;text-shadow:2px 2px 0 #fff">+300　連擊 ×7</div>
+  </div>
+  <!-- HUD：連擊條 -->
+  <div style="position:absolute;top:10px;left:12px;right:64px;height:12px;background:#9aa0a3;border:2px solid #6a7074;border-radius:7px;overflow:hidden"><div style="width:72%;height:100%;background:#f2c218"></div></div>
+  <div style="position:absolute;top:8px;right:36px;font-size:14px;color:#3a4148;text-shadow:1px 1px 0 #fff">×7</div>
+  <div style="position:absolute;top:30px;right:12px;display:flex;flex-direction:column;align-items:flex-end;gap:2px">
+    <span style="font-size:13px;color:#c98a10;text-shadow:1px 1px 0 #fff">+17</span>
+    <div style="display:flex;align-items:center;gap:5px"><div style="width:18px;height:18px;border-radius:50%;background:#f2b830;border:2px solid #b87c14;display:flex;align-items:center;justify-content:center;font-size:10px;color:#8a5a10">$</div><span style="font-size:16px;color:#3a4148;text-shadow:1px 1px 0 #fff">153</span></div>
+  </div>
+  <!-- 樓層計數 -->
+  <div style="position:absolute;bottom:12px;left:12px;display:flex;align-items:flex-end;gap:5px">
+    <div style="display:flex;flex-direction:column;align-items:center;gap:2px">
+      <div style="width:10px;height:8px;background:#f2c218;box-shadow:0 10px 0 #f2c218,0 20px 0 #f2c218"></div>
+      <div style="background:#2c2c2c;border-radius:4px;padding:2px 7px;font-size:12px;color:#f2c218;margin-top:22px">018</div>
+    </div>
+  </div>
+  <div style="position:absolute;bottom:12px;right:12px;font-size:15px;color:#fff;text-shadow:1px 1px 0 #3a4148">0:42</div>
+</div>
+<div class="cap">遊戲中・高空＋Perfect 288×512</div>
+</div>
+
+<!-- 2a Game Over -->
+<div>
+<div class="dv-card" data-screen-label="2a Game Over" style="width:288px;height:512px;position:relative;overflow:hidden;background:#cdd2d4">
+  <div style="position:absolute;inset:0;left:-10px;width:120px;background:repeating-linear-gradient(90deg,#8fc0e4 0 12px,#c6e4f6 12px 24px,#e6eaec 24px 44px)"></div>
+  <div style="position:absolute;top:0;bottom:0;right:-10px;width:110px;background:#a8adb0"></div>
+  <!-- 傾倒的塔 -->
+  <div style="position:absolute;left:50%;bottom:-20px;transform:translateX(-50%) rotate(7deg);transform-origin:bottom center;display:flex;flex-direction:column;align-items:center;opacity:.95">
+    <div style="width:78px;height:78px;background:linear-gradient(90deg,#f6bc48 0 9px,#eaa82c 9px 68%,#d98f1a 68% 88%,#b87814 88% 100%);border:3px solid #8a5a10;box-shadow:inset 0 -7px 0 rgba(122,74,8,.4);box-sizing:border-box;margin-left:30px"></div>
+    <div style="width:78px;height:78px;background:linear-gradient(90deg,#f6bc48 0 9px,#eaa82c 9px 68%,#d98f1a 68% 88%,#b87814 88% 100%);border:3px solid #8a5a10;box-shadow:inset 0 -7px 0 rgba(122,74,8,.4);box-sizing:border-box;margin-left:-12px;margin-top:-3px"></div>
+    <div style="width:78px;height:78px;background:linear-gradient(90deg,#f6bc48 0 9px,#eaa82c 9px 68%,#d98f1a 68% 88%,#b87814 88% 100%);border:3px solid #8a5a10;box-shadow:inset 0 -7px 0 rgba(122,74,8,.4);box-sizing:border-box;margin-top:-3px"></div>
+  </div>
+  <div style="position:absolute;inset:0;background:rgba(44,52,60,.6)"></div>
+  <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-54%);width:228px;background:#e6e8ea;border:4px solid #6a7074;box-shadow:0 6px 0 #4a5054;display:flex;flex-direction:column;align-items:center;gap:12px;padding:0 16px 18px">
+    <div style="width:calc(100% + 32px);background:#e8a428;border-bottom:4px solid #8a5a10;padding:10px 0;text-align:center;font-size:24px;color:#3a2a08">遊戲結束</div>
+    <div style="width:100%;display:flex;flex-direction:column;gap:6px;font-size:14px;color:#3a4148">
+      <div style="display:flex;justify-content:space-between"><span>最終得分</span><span style="color:#c98a10">4800</span></div>
+      <div style="display:flex;justify-content:space-between"><span>最高連擊</span><span>×7</span></div>
+      <div style="display:flex;justify-content:space-between"><span>樓層高度</span><span>18 F</span></div>
+      <div style="display:flex;justify-content:space-between"><span>獲得金幣</span><span style="color:#c98a10">$ 153</span></div>
+    </div>
+    <div style="background:#e8a428;color:#3a2a08;border:3px solid #8a5a10;box-shadow:0 4px 0 #8a5a10;padding:8px 26px;font-size:16px;letter-spacing:3px">重新開始</div>
+    <div style="font-size:12px;color:#5a6168;border-bottom:2px solid rgba(90,97,104,.5);padding-bottom:1px">回主選單</div>
+  </div>
+</div>
+<div class="cap">Game Over 視窗 288×512</div>
+</div>
+</div>
+
+<!-- 2a 桌機版 -->
+<div class="dv-card" data-screen-label="2a 桌機版" style="width:1024px;height:576px;position:relative;overflow:hidden;background:#cdd2d4;margin-top:14px">
+  <div style="position:absolute;top:0;bottom:0;left:-16px;width:250px;background:repeating-linear-gradient(90deg,#8fc0e4 0 14px,#c6e4f6 14px 28px,#e6eaec 28px 52px)"></div>
+  <div style="position:absolute;top:0;bottom:0;right:-16px;width:230px;background:#a8adb0"></div>
+  <div style="position:absolute;top:70px;bottom:0;right:190px;width:110px;background:repeating-linear-gradient(90deg,#8fc0e4 0 12px,#c6e4f6 12px 24px,#b4babd 24px 42px)"></div>
+  <div style="position:absolute;top:200px;bottom:0;left:250px;width:90px;background:#babfc2"></div>
+  <div style="position:absolute;top:120px;bottom:0;right:330px;width:70px;background:repeating-linear-gradient(0deg,#a2a8ab 0 24px,#b4babd 24px 48px)"></div>
+  <!-- 塔 -->
+  <div style="position:absolute;left:50%;bottom:-40px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center">
+    <div style="position:relative;width:90px;height:90px;background:linear-gradient(90deg,#f6bc48 0 9px,#eaa82c 9px 68%,#d98f1a 68% 88%,#b87814 88% 100%);border:3px solid #8a5a10;box-shadow:inset 0 -7px 0 rgba(122,74,8,.4);box-sizing:border-box;display:flex;align-items:center;justify-content:center;gap:8px;margin-left:6px">
+      <div style="position:absolute;top:2px;left:2px;right:2px;height:7px;background:linear-gradient(#eceeef,#b4b8ba)"></div>
+      <div style="width:28px;height:42px;background:#24486a;border:2px solid #c4c8ca;box-sizing:border-box;display:flex;gap:2px;padding:2px;margin-top:5px"><div style="flex:1;background:#8ec2e8"></div><div style="flex:1;background:#a9d4f2"></div></div>
+      <div style="width:28px;height:42px;background:#24486a;border:2px solid #c4c8ca;box-sizing:border-box;display:flex;gap:2px;padding:2px;margin-top:5px"><div style="flex:1;background:#8ec2e8"></div><div style="flex:1;background:#a9d4f2"></div></div>
+    </div>
+    <div style="position:relative;width:90px;height:90px;background:linear-gradient(90deg,#f6bc48 0 9px,#eaa82c 9px 68%,#d98f1a 68% 88%,#b87814 88% 100%);border:3px solid #8a5a10;box-shadow:inset 0 -7px 0 rgba(122,74,8,.4);box-sizing:border-box;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:-3px;margin-left:-5px">
+      <div style="position:absolute;top:2px;left:2px;right:2px;height:7px;background:linear-gradient(#eceeef,#b4b8ba)"></div>
+      <div style="width:28px;height:42px;background:#24486a;border:2px solid #c4c8ca;box-sizing:border-box;display:flex;gap:2px;padding:2px;margin-top:5px"><div style="flex:1;background:#8ec2e8"></div><div style="flex:1;background:#a9d4f2"></div></div>
+      <div style="width:28px;height:42px;background:#24486a;border:2px solid #c4c8ca;box-sizing:border-box;display:flex;gap:2px;padding:2px;margin-top:5px"><div style="flex:1;background:#8ec2e8"></div><div style="flex:1;background:#a9d4f2"></div></div>
+    </div>
+    <div style="position:relative;width:90px;height:90px;background:linear-gradient(90deg,#f6bc48 0 9px,#eaa82c 9px 68%,#d98f1a 68% 88%,#b87814 88% 100%);border:3px solid #8a5a10;box-shadow:inset 0 -7px 0 rgba(122,74,8,.4);box-sizing:border-box;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:-3px">
+      <div style="position:absolute;top:2px;left:2px;right:2px;height:7px;background:linear-gradient(#eceeef,#b4b8ba)"></div>
+      <div style="width:28px;height:42px;background:#24486a;border:2px solid #c4c8ca;box-sizing:border-box;display:flex;gap:2px;padding:2px;margin-top:5px"><div style="flex:1;background:#8ec2e8"></div><div style="flex:1;background:#a9d4f2"></div></div>
+      <div style="width:28px;height:42px;background:#24486a;border:2px solid #c4c8ca;box-sizing:border-box;display:flex;gap:2px;padding:2px;margin-top:5px"><div style="flex:1;background:#8ec2e8"></div><div style="flex:1;background:#a9d4f2"></div></div>
+    </div>
+  </div>
+  <!-- 吊索+傾斜方塊 -->
+  <div style="position:absolute;top:-12px;left:53%;width:6px;height:150px;background:#1c1c1c;transform:rotate(10deg);transform-origin:top center"></div>
+  <div style="position:absolute;top:132px;left:46%;transform:rotate(-10deg)">
+    <div style="position:relative;width:90px;height:90px;background:linear-gradient(90deg,#f6bc48 0 9px,#eaa82c 9px 68%,#d98f1a 68% 88%,#b87814 88% 100%);border:3px solid #8a5a10;box-shadow:inset 0 -7px 0 rgba(122,74,8,.4);box-sizing:border-box;display:flex;align-items:center;justify-content:center;gap:8px">
+      <div style="position:absolute;top:2px;left:2px;right:2px;height:7px;background:linear-gradient(#eceeef,#b4b8ba)"></div>
+      <div style="position:absolute;top:-10px;left:50%;transform:translateX(-50%);width:11px;height:11px;background:#d8a828;border:2px solid #8a5a10;border-radius:50%"></div>
+      <div style="width:28px;height:42px;background:#24486a;border:2px solid #c4c8ca;box-sizing:border-box;display:flex;gap:2px;padding:2px;margin-top:5px"><div style="flex:1;background:#8ec2e8"></div><div style="flex:1;background:#a9d4f2"></div></div>
+      <div style="width:28px;height:42px;background:#24486a;border:2px solid #c4c8ca;box-sizing:border-box;display:flex;gap:2px;padding:2px;margin-top:5px"><div style="flex:1;background:#8ec2e8"></div><div style="flex:1;background:#a9d4f2"></div></div>
+    </div>
+  </div>
+  <!-- HUD -->
+  <div style="position:absolute;top:14px;left:16px;right:400px;height:14px;background:#9aa0a3;border:2px solid #6a7074;border-radius:8px;overflow:hidden"><div style="width:72%;height:100%;background:#f2c218"></div></div>
+  <div style="position:absolute;top:12px;right:370px;font-size:16px;color:#3a4148;text-shadow:1px 1px 0 #fff">×7</div>
+  <div style="position:absolute;top:12px;right:16px;display:flex;align-items:center;gap:6px"><span style="font-size:14px;color:#c98a10;text-shadow:1px 1px 0 #fff">+17</span><div style="width:20px;height:20px;border-radius:50%;background:#f2b830;border:2px solid #b87c14;display:flex;align-items:center;justify-content:center;font-size:11px;color:#8a5a10">$</div><span style="font-size:18px;color:#3a4148;text-shadow:1px 1px 0 #fff">153</span></div>
+  <div style="position:absolute;bottom:14px;left:16px;background:#2c2c2c;border-radius:4px;padding:3px 10px;font-size:14px;color:#f2c218">018 F</div>
+  <div style="position:absolute;left:0;right:0;bottom:14px;text-align:center;font-size:14px;color:#3a4148;opacity:.8">按下 <span style="background:#fff;border:2px solid #6a7074;padding:1px 12px">空白鍵</span> 放下方塊</div>
+</div>
+<div class="cap">桌機版 遊戲中 1024×576</div>
+</div>
+
+</div>
+<p class="dv-next">下一步可以說：「用 <a class="dv-oid" href="#2a">2a</a> 做可玩原型」 · 「方塊換成別的顏色」 · 「主選單再熱鬧一點」</p>
+</section>
+
+<section class="dv-turn" id="t1">
+<div class="dv-thd"><a class="dv-tid" href="#t1">1</a><span class="dv-tname">疊房子遊戲 — 像素風視覺方向 ×2（手機直式 + 桌機橫式）</span></div>
+<div style="font:12px/1.6 system-ui,sans-serif;color:rgba(0,0,0,.6);max-width:760px;margin:0 0 24px">
+假設：現代公寓大樓主題、繁體中文介面、背景含視差雲層與遠景城市。每個方向包含四個手機畫面（主選單／遊戲中／Perfect 判定／Game Over）與一個桌機版遊戲畫面。方向 <a class="dv-oid" href="#1a">1a</a> 為明亮日間粉彩；方向 <a class="dv-oid" href="#1b">1b</a> 為黃昏霓虹夜景。
+</div>
+<div class="dv-opts">
+
+<!-- ============ OPTION 1A 日間粉彩 ============ -->
+<div class="dv-opt" id="1a">
+<div class="dv-olabel"><a class="dv-oid" href="#1a">1a</a>日間粉彩 — 奶油牆面、珊瑚屋簷、水藍天空</div>
+<div style="display:flex;gap:16px;flex-wrap:wrap">
+
+<!-- 1a 主選單 -->
+<div>
+<div class="dv-card" data-screen-label="1a 主選單" style="width:288px;height:512px;position:relative;overflow:hidden;background:linear-gradient(#8ed4ee 0 40%,#b4e4f4 40% 70%,#d8f1fa 70% 100%)">
+  <div style="position:absolute;top:34px;right:38px;width:34px;height:34px;background:#ffd23e;box-shadow:4px 4px 0 rgba(226,105,90,.35)"></div>
+  <div style="position:absolute;top:74px;left:26px;width:52px;height:12px;background:#ffffff;box-shadow:10px -8px 0 #ffffff"></div>
+  <div style="position:absolute;top:128px;right:22px;width:64px;height:14px;background:#ffffff;box-shadow:-14px -9px 0 #ffffff"></div>
+  <!-- 遠景城市 -->
+  <div style="position:absolute;left:0;right:0;bottom:96px;display:flex;align-items:flex-end;gap:6px;padding:0 8px">
+    <div style="width:30px;height:52px;background:#b6cfdd"></div><div style="width:22px;height:80px;background:#a5c3d4"></div><div style="width:34px;height:40px;background:#b6cfdd"></div><div style="width:26px;height:66px;background:#a5c3d4"></div><div style="width:30px;height:48px;background:#b6cfdd"></div><div style="width:22px;height:72px;background:#a5c3d4"></div><div style="width:32px;height:56px;background:#b6cfdd"></div>
+  </div>
+  <div style="position:absolute;left:0;right:0;bottom:0;height:96px;background:#93a7b8;border-top:4px solid #2b3a55"></div>
+  <!-- 前景大樓 -->
+  <div style="position:absolute;left:50%;bottom:96px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center">
+    <div style="width:88px;height:16px;background:#e2695a;border:3px solid #2b3a55;box-sizing:border-box"></div>
+    <div style="width:110px;height:110px;background:#f6e7c8;border:3px solid #2b3a55;box-sizing:border-box;padding:6px 8px;border-top:none"><div style="width:100%;height:100%;background-color:#f6e7c8;background-image:repeating-linear-gradient(90deg,transparent 0 14px,#f6e7c8 14px 24px),repeating-linear-gradient(0deg,#7fc7de 0 10px,#f6e7c8 10px 22px)"></div></div>
+  </div>
+  <!-- 標題 -->
+  <div style="position:absolute;top:158px;left:0;right:0;display:flex;flex-direction:column;align-items:center;gap:8px">
+    <div style="font-size:40px;line-height:1.05;color:#2b3a55;text-shadow:3px 3px 0 #ffffff;text-align:center">疊疊<br>大樓</div>
+    <div style="font-family:'Press Start 2P',monospace;font-size:8px;color:#e2695a;letter-spacing:2px">PIXEL TOWER</div>
+  </div>
+  <!-- 按鈕 -->
+  <div style="position:absolute;left:0;right:0;bottom:118px;display:flex;flex-direction:column;align-items:center;gap:10px">
+    <div style="background:#e2695a;color:#fff;border:3px solid #2b3a55;box-shadow:0 4px 0 #2b3a55;padding:10px 34px;font-size:18px;letter-spacing:4px">開始遊戲</div>
+    <div style="display:flex;gap:10px">
+      <div style="background:#fff;border:3px solid #2b3a55;box-shadow:0 3px 0 #2b3a55;padding:5px 12px;font-size:13px;color:#2b3a55">♪ 音效：開</div>
+    </div>
+  </div>
+</div>
+<div class="cap">主選單 288×512</div>
+</div>
+
+<!-- 1a 遊戲中 -->
+<div>
+<div class="dv-card" data-screen-label="1a 遊戲中" style="width:288px;height:512px;position:relative;overflow:hidden;background:linear-gradient(#8ed4ee 0 40%,#b4e4f4 40% 70%,#d8f1fa 70% 100%)">
+  <div style="position:absolute;top:96px;left:18px;width:48px;height:11px;background:#ffffff;box-shadow:9px -7px 0 #ffffff"></div>
+  <div style="position:absolute;top:150px;right:14px;width:56px;height:12px;background:#ffffff;box-shadow:-12px -8px 0 #ffffff"></div>
+  <div style="position:absolute;left:0;right:0;bottom:60px;display:flex;align-items:flex-end;gap:6px;padding:0 6px;opacity:.85">
+    <div style="width:26px;height:60px;background:#b6cfdd"></div><div style="width:20px;height:90px;background:#a5c3d4"></div><div style="width:30px;height:46px;background:#b6cfdd"></div><div style="width:24px;height:74px;background:#a5c3d4"></div><div style="width:28px;height:54px;background:#b6cfdd"></div><div style="width:20px;height:82px;background:#a5c3d4"></div><div style="width:28px;height:64px;background:#b6cfdd"></div>
+  </div>
+  <div style="position:absolute;left:0;right:0;bottom:0;height:60px;background:#93a7b8;border-top:4px solid #2b3a55"></div>
+  <!-- 吊車橫樑 -->
+  <div style="position:absolute;top:64px;left:0;right:0;height:10px;background:repeating-linear-gradient(90deg,#f2b53a 0 12px,#c98d1e 12px 24px);border-top:3px solid #2b3a55;border-bottom:3px solid #2b3a55"></div>
+  <!-- 擺動軌跡 -->
+  <div style="position:absolute;top:104px;left:64px;right:64px;height:3px;background:repeating-linear-gradient(90deg,#2b3a55 0 5px,transparent 5px 12px);opacity:.35"></div>
+  <!-- 吊索 + 吊掛方塊（偏左擺動） -->
+  <div style="position:absolute;top:74px;left:50%;width:3px;height:52px;background:#2b3a55;transform:rotate(14deg);transform-origin:top center"></div>
+  <div style="position:absolute;top:122px;left:50%;transform:translateX(-88%)">
+    <div style="width:92px;height:44px;background:#f6e7c8;border:3px solid #2b3a55;box-sizing:border-box;padding:5px 7px"><div style="width:100%;height:100%;background-color:#f6e7c8;background-image:repeating-linear-gradient(90deg,transparent 0 12px,#f6e7c8 12px 21px),repeating-linear-gradient(0deg,#7fc7de 0 9px,#f6e7c8 9px 19px)"></div></div>
+  </div>
+  <!-- 塔 -->
+  <div style="position:absolute;left:50%;bottom:60px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center">
+    <div style="width:92px;height:44px;background:#f6e7c8;border:3px solid #2b3a55;box-sizing:border-box;padding:5px 7px;margin-left:8px"><div style="width:100%;height:100%;background-color:#f6e7c8;background-image:repeating-linear-gradient(90deg,transparent 0 12px,#f6e7c8 12px 21px),repeating-linear-gradient(0deg,#7fc7de 0 9px,#f6e7c8 9px 19px)"></div></div>
+    <div style="width:92px;height:44px;background:#f6e7c8;border:3px solid #2b3a55;box-sizing:border-box;padding:5px 7px;margin-left:-6px;margin-top:-3px"><div style="width:100%;height:100%;background-color:#f6e7c8;background-image:repeating-linear-gradient(90deg,transparent 0 12px,#f6e7c8 12px 21px),repeating-linear-gradient(0deg,#7fc7de 0 9px,#f6e7c8 9px 19px)"></div></div>
+    <div style="width:104px;height:30px;background:#9fb2c2;border:3px solid #2b3a55;box-sizing:border-box;margin-top:-3px;display:flex;align-items:center;justify-content:center;font-size:12px;color:#2b3a55">地基</div>
+  </div>
+  <!-- HUD -->
+  <div style="position:absolute;top:10px;left:10px;display:flex;flex-direction:column;gap:6px">
+    <div style="background:#2b3a55;color:#fff;border:3px solid #1a2233;padding:5px 10px;font-size:15px">分數 1200</div>
+    <div style="background:#ffd23e;color:#2b3a55;border:3px solid #1a2233;padding:3px 8px;font-size:13px;width:fit-content">連擊 ×3</div>
+  </div>
+  <div style="position:absolute;top:10px;right:10px;background:#2b3a55;border:3px solid #1a2233;padding:5px 9px;font-size:15px;color:#e2695a;letter-spacing:2px">♥♥♥</div>
+  <div style="position:absolute;left:0;right:0;bottom:14px;text-align:center;font-size:12px;color:#2b3a55;opacity:.75">點擊畫面 放下方塊</div>
+</div>
+<div class="cap">遊戲中（HUD＋擺動） 288×512</div>
+</div>
+
+<!-- 1a Perfect -->
+<div>
+<div class="dv-card" data-screen-label="1a Perfect" style="width:288px;height:512px;position:relative;overflow:hidden;background:linear-gradient(#8ed4ee 0 40%,#b4e4f4 40% 70%,#d8f1fa 70% 100%)">
+  <div style="position:absolute;top:96px;left:18px;width:48px;height:11px;background:#ffffff;box-shadow:9px -7px 0 #ffffff"></div>
+  <div style="position:absolute;left:0;right:0;bottom:60px;display:flex;align-items:flex-end;gap:6px;padding:0 6px;opacity:.85">
+    <div style="width:26px;height:60px;background:#b6cfdd"></div><div style="width:20px;height:90px;background:#a5c3d4"></div><div style="width:30px;height:46px;background:#b6cfdd"></div><div style="width:24px;height:74px;background:#a5c3d4"></div><div style="width:28px;height:54px;background:#b6cfdd"></div><div style="width:20px;height:82px;background:#a5c3d4"></div><div style="width:28px;height:64px;background:#b6cfdd"></div>
+  </div>
+  <div style="position:absolute;left:0;right:0;bottom:0;height:60px;background:#93a7b8;border-top:4px solid #2b3a55"></div>
+  <div style="position:absolute;top:64px;left:0;right:0;height:10px;background:repeating-linear-gradient(90deg,#f2b53a 0 12px,#c98d1e 12px 24px);border-top:3px solid #2b3a55;border-bottom:3px solid #2b3a55"></div>
+  <div style="position:absolute;top:74px;left:50%;width:3px;height:30px;background:#2b3a55"></div>
+  <!-- 塔（微晃） -->
+  <div style="position:absolute;left:50%;bottom:60px;transform:translateX(-50%) rotate(-2deg);transform-origin:bottom center;display:flex;flex-direction:column;align-items:center">
+    <div style="width:92px;height:44px;background:#f6e7c8;border:3px solid #ffd23e;box-sizing:border-box;padding:5px 7px;box-shadow:0 0 0 2px #e2695a"><div style="width:100%;height:100%;background-color:#f6e7c8;background-image:repeating-linear-gradient(90deg,transparent 0 12px,#f6e7c8 12px 21px),repeating-linear-gradient(0deg,#7fc7de 0 9px,#f6e7c8 9px 19px)"></div></div>
+    <div style="width:92px;height:44px;background:#f6e7c8;border:3px solid #2b3a55;box-sizing:border-box;padding:5px 7px;margin-top:-3px"><div style="width:100%;height:100%;background-color:#f6e7c8;background-image:repeating-linear-gradient(90deg,transparent 0 12px,#f6e7c8 12px 21px),repeating-linear-gradient(0deg,#7fc7de 0 9px,#f6e7c8 9px 19px)"></div></div>
+    <div style="width:92px;height:44px;background:#f6e7c8;border:3px solid #2b3a55;box-sizing:border-box;padding:5px 7px;margin-top:-3px"><div style="width:100%;height:100%;background-color:#f6e7c8;background-image:repeating-linear-gradient(90deg,transparent 0 12px,#f6e7c8 12px 21px),repeating-linear-gradient(0deg,#7fc7de 0 9px,#f6e7c8 9px 19px)"></div></div>
+    <div style="width:104px;height:30px;background:#9fb2c2;border:3px solid #2b3a55;box-sizing:border-box;margin-top:-3px"></div>
+  </div>
+  <!-- 晃動指示箭頭 -->
+  <div style="position:absolute;bottom:250px;left:34px;font-size:20px;color:#2b3a55;opacity:.6">←</div>
+  <div style="position:absolute;bottom:250px;right:34px;font-size:20px;color:#2b3a55;opacity:.6">→</div>
+  <!-- PERFECT 特效 -->
+  <div style="position:absolute;top:170px;left:0;right:0;display:flex;flex-direction:column;align-items:center;gap:4px">
+    <div style="font-family:'Press Start 2P',monospace;font-size:20px;color:#ffd23e;text-shadow:3px 3px 0 #e2695a,-2px -2px 0 #2b3a55">PERFECT!</div>
+    <div style="font-size:16px;color:#2b3a55;text-shadow:2px 2px 0 #fff">+300　連擊 ×4</div>
+  </div>
+  <div style="position:absolute;top:150px;left:50%;transform:translateX(-50%);width:6px;height:6px;background:#ffd23e;box-shadow:-46px 14px 0 #ffd23e,46px 14px 0 #ffd23e,-30px -8px 0 #e2695a,30px -8px 0 #e2695a,-60px -2px 0 #ffd23e,60px -2px 0 #ffd23e"></div>
+  <!-- HUD -->
+  <div style="position:absolute;top:10px;left:10px;background:#2b3a55;color:#fff;border:3px solid #1a2233;padding:5px 10px;font-size:15px">分數 1500</div>
+  <div style="position:absolute;top:10px;right:10px;background:#2b3a55;border:3px solid #1a2233;padding:5px 9px;font-size:15px;color:#e2695a;letter-spacing:2px">♥♥♥</div>
+</div>
+<div class="cap">Perfect 判定＋大樓晃動 288×512</div>
+</div>
+
+<!-- 1a Game Over -->
+<div>
+<div class="dv-card" data-screen-label="1a Game Over" style="width:288px;height:512px;position:relative;overflow:hidden;background:linear-gradient(#8ed4ee 0 40%,#b4e4f4 40% 70%,#d8f1fa 70% 100%)">
+  <div style="position:absolute;left:0;right:0;bottom:0;height:60px;background:#93a7b8;border-top:4px solid #2b3a55"></div>
+  <div style="position:absolute;left:50%;bottom:60px;transform:translateX(-50%) rotate(5deg);transform-origin:bottom center;display:flex;flex-direction:column;align-items:center;opacity:.9">
+    <div style="width:92px;height:44px;background:#f6e7c8;border:3px solid #2b3a55;box-sizing:border-box;margin-left:26px"></div>
+    <div style="width:92px;height:44px;background:#f6e7c8;border:3px solid #2b3a55;box-sizing:border-box;margin-left:-10px;margin-top:-3px"></div>
+    <div style="width:104px;height:30px;background:#9fb2c2;border:3px solid #2b3a55;box-sizing:border-box;margin-top:-3px"></div>
+  </div>
+  <!-- 遮罩 -->
+  <div style="position:absolute;inset:0;background:rgba(30,40,66,.62)"></div>
+  <!-- 對話框 -->
+  <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-54%);width:224px;background:#f6e7c8;border:4px solid #2b3a55;box-shadow:0 6px 0 #1a2233;padding:18px 16px;display:flex;flex-direction:column;align-items:center;gap:12px">
+    <div style="font-size:26px;color:#e2695a;text-shadow:2px 2px 0 #fff">遊戲結束</div>
+    <div style="width:100%;display:flex;flex-direction:column;gap:6px;font-size:14px;color:#2b3a55">
+      <div style="display:flex;justify-content:space-between"><span>最終得分</span><span style="color:#e2695a">4800</span></div>
+      <div style="display:flex;justify-content:space-between"><span>最高連擊</span><span>×6</span></div>
+      <div style="display:flex;justify-content:space-between"><span>樓層高度</span><span>12 F</span></div>
+    </div>
+    <div style="background:#e2695a;color:#fff;border:3px solid #2b3a55;box-shadow:0 4px 0 #2b3a55;padding:8px 26px;font-size:16px;letter-spacing:3px">重新開始</div>
+    <div style="font-size:12px;color:#2b3a55;opacity:.7;border-bottom:2px solid rgba(43,58,85,.4);padding-bottom:1px">回主選單</div>
+  </div>
+</div>
+<div class="cap">Game Over 視窗 288×512</div>
+</div>
+</div>
+
+<!-- 1a 桌機版 -->
+<div class="dv-card" data-screen-label="1a 桌機版" style="width:1024px;height:576px;position:relative;overflow:hidden;background:linear-gradient(#8ed4ee 0 40%,#b4e4f4 40% 70%,#d8f1fa 70% 100%);margin-top:14px">
+  <div style="position:absolute;top:52px;right:110px;width:44px;height:44px;background:#ffd23e"></div>
+  <div style="position:absolute;top:88px;left:96px;width:70px;height:15px;background:#fff;box-shadow:14px -10px 0 #fff"></div>
+  <div style="position:absolute;top:140px;left:420px;width:56px;height:12px;background:#fff;box-shadow:-12px -8px 0 #fff"></div>
+  <div style="position:absolute;top:110px;right:300px;width:80px;height:16px;background:#fff;box-shadow:-16px -11px 0 #fff"></div>
+  <div style="position:absolute;left:0;right:0;bottom:64px;display:flex;align-items:flex-end;gap:10px;padding:0 12px;opacity:.85">
+    <div style="width:60px;height:110px;background:#a5c3d4"></div><div style="width:44px;height:70px;background:#b6cfdd"></div><div style="width:70px;height:150px;background:#a5c3d4"></div><div style="width:52px;height:92px;background:#b6cfdd"></div><div style="width:64px;height:124px;background:#a5c3d4"></div><div style="width:46px;height:78px;background:#b6cfdd"></div><div style="width:72px;height:140px;background:#a5c3d4"></div><div style="width:50px;height:86px;background:#b6cfdd"></div><div style="width:66px;height:118px;background:#a5c3d4"></div><div style="width:44px;height:96px;background:#b6cfdd"></div><div style="width:70px;height:132px;background:#a5c3d4"></div><div style="width:54px;height:74px;background:#b6cfdd"></div>
+  </div>
+  <div style="position:absolute;left:0;right:0;bottom:0;height:64px;background:#93a7b8;border-top:5px solid #2b3a55"></div>
+  <div style="position:absolute;top:70px;left:262px;right:262px;height:12px;background:repeating-linear-gradient(90deg,#f2b53a 0 14px,#c98d1e 14px 28px);border-top:3px solid #2b3a55;border-bottom:3px solid #2b3a55"></div>
+  <div style="position:absolute;top:118px;left:352px;right:352px;height:3px;background:repeating-linear-gradient(90deg,#2b3a55 0 6px,transparent 6px 14px);opacity:.35"></div>
+  <div style="position:absolute;top:82px;left:50%;width:3px;height:60px;background:#2b3a55;transform:rotate(-12deg);transform-origin:top center"></div>
+  <div style="position:absolute;top:138px;left:50%;transform:translateX(-6%)">
+    <div style="width:104px;height:50px;background:#f6e7c8;border:3px solid #2b3a55;box-sizing:border-box;padding:6px 8px"><div style="width:100%;height:100%;background-color:#f6e7c8;background-image:repeating-linear-gradient(90deg,transparent 0 13px,#f6e7c8 13px 23px),repeating-linear-gradient(0deg,#7fc7de 0 10px,#f6e7c8 10px 21px)"></div></div>
+  </div>
+  <div style="position:absolute;left:50%;bottom:64px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center">
+    <div style="width:104px;height:50px;background:#f6e7c8;border:3px solid #2b3a55;box-sizing:border-box;padding:6px 8px;margin-left:10px"><div style="width:100%;height:100%;background-color:#f6e7c8;background-image:repeating-linear-gradient(90deg,transparent 0 13px,#f6e7c8 13px 23px),repeating-linear-gradient(0deg,#7fc7de 0 10px,#f6e7c8 10px 21px)"></div></div>
+    <div style="width:104px;height:50px;background:#f6e7c8;border:3px solid #2b3a55;box-sizing:border-box;padding:6px 8px;margin-left:-6px;margin-top:-3px"><div style="width:100%;height:100%;background-color:#f6e7c8;background-image:repeating-linear-gradient(90deg,transparent 0 13px,#f6e7c8 13px 23px),repeating-linear-gradient(0deg,#7fc7de 0 10px,#f6e7c8 10px 21px)"></div></div>
+    <div style="width:104px;height:50px;background:#f6e7c8;border:3px solid #2b3a55;box-sizing:border-box;padding:6px 8px;margin-top:-3px"><div style="width:100%;height:100%;background-color:#f6e7c8;background-image:repeating-linear-gradient(90deg,transparent 0 13px,#f6e7c8 13px 23px),repeating-linear-gradient(0deg,#7fc7de 0 10px,#f6e7c8 10px 21px)"></div></div>
+    <div style="width:118px;height:34px;background:#9fb2c2;border:3px solid #2b3a55;box-sizing:border-box;margin-top:-3px;display:flex;align-items:center;justify-content:center;font-size:13px;color:#2b3a55">地基</div>
+  </div>
+  <div style="position:absolute;top:16px;left:16px;display:flex;flex-direction:column;gap:8px">
+    <div style="background:#2b3a55;color:#fff;border:3px solid #1a2233;padding:7px 14px;font-size:19px">分數 1200</div>
+    <div style="background:#ffd23e;color:#2b3a55;border:3px solid #1a2233;padding:4px 10px;font-size:15px;width:fit-content">連擊 ×3</div>
+  </div>
+  <div style="position:absolute;top:16px;right:16px;background:#2b3a55;border:3px solid #1a2233;padding:7px 12px;font-size:19px;color:#e2695a;letter-spacing:3px">♥♥♥</div>
+  <div style="position:absolute;left:0;right:0;bottom:20px;text-align:center;font-size:14px;color:#2b3a55;opacity:.8">按下 <span style="background:#fff;border:2px solid #2b3a55;padding:1px 12px">空白鍵</span> 放下方塊</div>
+</div>
+<div class="cap">桌機版 遊戲中 1024×576</div>
+</div>
+
+<!-- ============ OPTION 1B 黃昏霓虹 ============ -->
+<div class="dv-opt" id="1b">
+<div class="dv-olabel"><a class="dv-oid" href="#1b">1b</a>黃昏霓虹 — 暮色天空、點燈窗戶、青色霓虹 UI</div>
+<div style="display:flex;gap:16px;flex-wrap:wrap">
+
+<!-- 1b 主選單 -->
+<div>
+<div class="dv-card" data-screen-label="1b 主選單" style="width:288px;height:512px;position:relative;overflow:hidden;background:linear-gradient(#1d1633 0 30%,#3a2354 30% 55%,#6e3a63 55% 75%,#c9556e 75% 100%)">
+  <div style="position:absolute;top:30px;left:40px;width:4px;height:4px;background:#fff;box-shadow:60px 22px 0 #fff,140px 8px 0 rgba(255,255,255,.7),180px 40px 0 #fff,100px 52px 0 rgba(255,255,255,.6),24px 70px 0 rgba(255,255,255,.8)"></div>
+  <div style="position:absolute;top:96px;right:34px;width:30px;height:30px;background:#f4ead8;box-shadow:0 0 0 4px rgba(244,234,216,.25)"></div>
+  <div style="position:absolute;top:150px;left:20px;width:50px;height:11px;background:#4a3663;box-shadow:10px -7px 0 #4a3663"></div>
+  <div style="position:absolute;left:0;right:0;bottom:96px;display:flex;align-items:flex-end;gap:6px;padding:0 8px">
+    <div style="width:30px;height:56px;background:#241b3d;background-image:repeating-linear-gradient(0deg,transparent 0 8px,rgba(255,202,122,.5) 8px 11px,transparent 11px 16px)"></div><div style="width:22px;height:84px;background:#2c2148;background-image:repeating-linear-gradient(0deg,transparent 0 9px,rgba(255,202,122,.4) 9px 12px,transparent 12px 18px)"></div><div style="width:34px;height:44px;background:#241b3d"></div><div style="width:26px;height:70px;background:#2c2148;background-image:repeating-linear-gradient(0deg,transparent 0 8px,rgba(255,202,122,.45) 8px 11px,transparent 11px 17px)"></div><div style="width:30px;height:50px;background:#241b3d"></div><div style="width:22px;height:76px;background:#2c2148;background-image:repeating-linear-gradient(0deg,transparent 0 9px,rgba(255,202,122,.4) 9px 12px,transparent 12px 18px)"></div><div style="width:32px;height:60px;background:#241b3d"></div>
+  </div>
+  <div style="position:absolute;left:0;right:0;bottom:0;height:96px;background:#141026;border-top:4px solid #57e6d8"></div>
+  <div style="position:absolute;left:50%;bottom:96px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center">
+    <div style="width:88px;height:16px;background:#22304a;border:3px solid #57e6d8;box-sizing:border-box"></div>
+    <div style="width:110px;height:110px;background:#3e5a7e;border:3px solid #22304a;box-sizing:border-box;padding:6px 8px;border-top:none"><div style="width:100%;height:100%;background-color:#3e5a7e;background-image:repeating-linear-gradient(90deg,transparent 0 14px,#3e5a7e 14px 24px),repeating-linear-gradient(0deg,#ffd98a 0 10px,#3e5a7e 10px 22px)"></div></div>
+  </div>
+  <div style="position:absolute;top:158px;left:0;right:0;display:flex;flex-direction:column;align-items:center;gap:8px">
+    <div style="font-size:40px;line-height:1.05;color:#57e6d8;text-shadow:3px 3px 0 #141026,0 0 12px rgba(87,230,216,.6);text-align:center">疊疊<br>大樓</div>
+    <div style="font-family:'Press Start 2P',monospace;font-size:8px;color:#ff8f5a;letter-spacing:2px">PIXEL TOWER</div>
+  </div>
+  <div style="position:absolute;left:0;right:0;bottom:118px;display:flex;flex-direction:column;align-items:center;gap:10px">
+    <div style="background:#57e6d8;color:#141026;border:3px solid #141026;box-shadow:0 4px 0 #141026,0 0 14px rgba(87,230,216,.5);padding:10px 34px;font-size:18px;letter-spacing:4px">開始遊戲</div>
+    <div style="background:#141026;border:3px solid #57e6d8;padding:5px 12px;font-size:13px;color:#57e6d8">♪ 音效：開</div>
+  </div>
+</div>
+<div class="cap">主選單 288×512</div>
+</div>
+
+<!-- 1b 遊戲中 -->
+<div>
+<div class="dv-card" data-screen-label="1b 遊戲中" style="width:288px;height:512px;position:relative;overflow:hidden;background:linear-gradient(#1d1633 0 30%,#3a2354 30% 55%,#6e3a63 55% 75%,#c9556e 75% 100%)">
+  <div style="position:absolute;top:96px;left:30px;width:4px;height:4px;background:#fff;box-shadow:70px 16px 0 rgba(255,255,255,.7),150px 30px 0 #fff,190px 4px 0 rgba(255,255,255,.6)"></div>
+  <div style="position:absolute;top:150px;right:16px;width:52px;height:11px;background:#4a3663;box-shadow:-11px -7px 0 #4a3663"></div>
+  <div style="position:absolute;left:0;right:0;bottom:60px;display:flex;align-items:flex-end;gap:6px;padding:0 6px">
+    <div style="width:26px;height:64px;background:#241b3d;background-image:repeating-linear-gradient(0deg,transparent 0 8px,rgba(255,202,122,.5) 8px 11px,transparent 11px 16px)"></div><div style="width:20px;height:94px;background:#2c2148;background-image:repeating-linear-gradient(0deg,transparent 0 9px,rgba(255,202,122,.4) 9px 12px,transparent 12px 18px)"></div><div style="width:30px;height:50px;background:#241b3d"></div><div style="width:24px;height:78px;background:#2c2148;background-image:repeating-linear-gradient(0deg,transparent 0 8px,rgba(255,202,122,.45) 8px 11px,transparent 11px 17px)"></div><div style="width:28px;height:58px;background:#241b3d"></div><div style="width:20px;height:86px;background:#2c2148;background-image:repeating-linear-gradient(0deg,transparent 0 9px,rgba(255,202,122,.4) 9px 12px,transparent 12px 18px)"></div><div style="width:28px;height:68px;background:#241b3d"></div>
+  </div>
+  <div style="position:absolute;left:0;right:0;bottom:0;height:60px;background:#141026;border-top:4px solid #57e6d8"></div>
+  <div style="position:absolute;top:64px;left:0;right:0;height:10px;background:repeating-linear-gradient(90deg,#ff8f5a 0 12px,#b85a34 12px 24px);border-top:3px solid #141026;border-bottom:3px solid #141026"></div>
+  <div style="position:absolute;top:104px;left:64px;right:64px;height:3px;background:repeating-linear-gradient(90deg,#57e6d8 0 5px,transparent 5px 12px);opacity:.45"></div>
+  <div style="position:absolute;top:74px;left:50%;width:3px;height:52px;background:#9db0c8;transform:rotate(14deg);transform-origin:top center"></div>
+  <div style="position:absolute;top:122px;left:50%;transform:translateX(-88%)">
+    <div style="width:92px;height:44px;background:#3e5a7e;border:3px solid #22304a;box-sizing:border-box;padding:5px 7px"><div style="width:100%;height:100%;background-color:#3e5a7e;background-image:repeating-linear-gradient(90deg,transparent 0 12px,#3e5a7e 12px 21px),repeating-linear-gradient(0deg,#ffd98a 0 9px,#3e5a7e 9px 19px)"></div></div>
+  </div>
+  <div style="position:absolute;left:50%;bottom:60px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center">
+    <div style="width:92px;height:44px;background:#3e5a7e;border:3px solid #22304a;box-sizing:border-box;padding:5px 7px;margin-left:8px"><div style="width:100%;height:100%;background-color:#3e5a7e;background-image:repeating-linear-gradient(90deg,transparent 0 12px,#3e5a7e 12px 21px),repeating-linear-gradient(0deg,#ffd98a 0 9px,#3e5a7e 9px 19px)"></div></div>
+    <div style="width:92px;height:44px;background:#3e5a7e;border:3px solid #22304a;box-sizing:border-box;padding:5px 7px;margin-left:-6px;margin-top:-3px"><div style="width:100%;height:100%;background-color:#3e5a7e;background-image:repeating-linear-gradient(90deg,transparent 0 12px,#3e5a7e 12px 21px),repeating-linear-gradient(0deg,#ffd98a 0 9px,#3e5a7e 9px 19px)"></div></div>
+    <div style="width:104px;height:30px;background:#22304a;border:3px solid #57e6d8;box-sizing:border-box;margin-top:-3px;display:flex;align-items:center;justify-content:center;font-size:12px;color:#57e6d8">地基</div>
+  </div>
+  <div style="position:absolute;top:10px;left:10px;display:flex;flex-direction:column;gap:6px">
+    <div style="background:#141026;color:#57e6d8;border:3px solid #57e6d8;padding:5px 10px;font-size:15px">分數 1200</div>
+    <div style="background:#ff8f5a;color:#141026;border:3px solid #141026;padding:3px 8px;font-size:13px;width:fit-content">連擊 ×3</div>
+  </div>
+  <div style="position:absolute;top:10px;right:10px;background:#141026;border:3px solid #57e6d8;padding:5px 9px;font-size:15px;color:#ff6d8a;letter-spacing:2px">♥♥♥</div>
+  <div style="position:absolute;left:0;right:0;bottom:14px;text-align:center;font-size:12px;color:#ffd98a;opacity:.85">點擊畫面 放下方塊</div>
+</div>
+<div class="cap">遊戲中（HUD＋擺動） 288×512</div>
+</div>
+
+<!-- 1b Perfect -->
+<div>
+<div class="dv-card" data-screen-label="1b Perfect" style="width:288px;height:512px;position:relative;overflow:hidden;background:linear-gradient(#1d1633 0 30%,#3a2354 30% 55%,#6e3a63 55% 75%,#c9556e 75% 100%)">
+  <div style="position:absolute;top:96px;left:30px;width:4px;height:4px;background:#fff;box-shadow:70px 16px 0 rgba(255,255,255,.7),150px 30px 0 #fff"></div>
+  <div style="position:absolute;left:0;right:0;bottom:60px;display:flex;align-items:flex-end;gap:6px;padding:0 6px">
+    <div style="width:26px;height:64px;background:#241b3d;background-image:repeating-linear-gradient(0deg,transparent 0 8px,rgba(255,202,122,.5) 8px 11px,transparent 11px 16px)"></div><div style="width:20px;height:94px;background:#2c2148"></div><div style="width:30px;height:50px;background:#241b3d"></div><div style="width:24px;height:78px;background:#2c2148;background-image:repeating-linear-gradient(0deg,transparent 0 8px,rgba(255,202,122,.45) 8px 11px,transparent 11px 17px)"></div><div style="width:28px;height:58px;background:#241b3d"></div><div style="width:20px;height:86px;background:#2c2148"></div><div style="width:28px;height:68px;background:#241b3d"></div>
+  </div>
+  <div style="position:absolute;left:0;right:0;bottom:0;height:60px;background:#141026;border-top:4px solid #57e6d8"></div>
+  <div style="position:absolute;top:64px;left:0;right:0;height:10px;background:repeating-linear-gradient(90deg,#ff8f5a 0 12px,#b85a34 12px 24px);border-top:3px solid #141026;border-bottom:3px solid #141026"></div>
+  <div style="position:absolute;top:74px;left:50%;width:3px;height:30px;background:#9db0c8"></div>
+  <div style="position:absolute;left:50%;bottom:60px;transform:translateX(-50%) rotate(-2deg);transform-origin:bottom center;display:flex;flex-direction:column;align-items:center">
+    <div style="width:92px;height:44px;background:#3e5a7e;border:3px solid #57e6d8;box-sizing:border-box;padding:5px 7px;box-shadow:0 0 12px rgba(87,230,216,.7)"><div style="width:100%;height:100%;background-color:#3e5a7e;background-image:repeating-linear-gradient(90deg,transparent 0 12px,#3e5a7e 12px 21px),repeating-linear-gradient(0deg,#ffd98a 0 9px,#3e5a7e 9px 19px)"></div></div>
+    <div style="width:92px;height:44px;background:#3e5a7e;border:3px solid #22304a;box-sizing:border-box;padding:5px 7px;margin-top:-3px"><div style="width:100%;height:100%;background-color:#3e5a7e;background-image:repeating-linear-gradient(90deg,transparent 0 12px,#3e5a7e 12px 21px),repeating-linear-gradient(0deg,#ffd98a 0 9px,#3e5a7e 9px 19px)"></div></div>
+    <div style="width:92px;height:44px;background:#3e5a7e;border:3px solid #22304a;box-sizing:border-box;padding:5px 7px;margin-top:-3px"><div style="width:100%;height:100%;background-color:#3e5a7e;background-image:repeating-linear-gradient(90deg,transparent 0 12px,#3e5a7e 12px 21px),repeating-linear-gradient(0deg,#ffd98a 0 9px,#3e5a7e 9px 19px)"></div></div>
+    <div style="width:104px;height:30px;background:#22304a;border:3px solid #57e6d8;box-sizing:border-box;margin-top:-3px"></div>
+  </div>
+  <div style="position:absolute;bottom:250px;left:34px;font-size:20px;color:#57e6d8;opacity:.7">←</div>
+  <div style="position:absolute;bottom:250px;right:34px;font-size:20px;color:#57e6d8;opacity:.7">→</div>
+  <div style="position:absolute;top:170px;left:0;right:0;display:flex;flex-direction:column;align-items:center;gap:4px">
+    <div style="font-family:'Press Start 2P',monospace;font-size:20px;color:#57e6d8;text-shadow:3px 3px 0 #141026,0 0 16px rgba(87,230,216,.8)">PERFECT!</div>
+    <div style="font-size:16px;color:#ffd98a;text-shadow:2px 2px 0 #141026">+300　連擊 ×4</div>
+  </div>
+  <div style="position:absolute;top:150px;left:50%;transform:translateX(-50%);width:6px;height:6px;background:#57e6d8;box-shadow:-46px 14px 0 #57e6d8,46px 14px 0 #57e6d8,-30px -8px 0 #ff8f5a,30px -8px 0 #ff8f5a,-60px -2px 0 #57e6d8,60px -2px 0 #57e6d8"></div>
+  <div style="position:absolute;top:10px;left:10px;background:#141026;color:#57e6d8;border:3px solid #57e6d8;padding:5px 10px;font-size:15px">分數 1500</div>
+  <div style="position:absolute;top:10px;right:10px;background:#141026;border:3px solid #57e6d8;padding:5px 9px;font-size:15px;color:#ff6d8a;letter-spacing:2px">♥♥♥</div>
+</div>
+<div class="cap">Perfect 判定＋大樓晃動 288×512</div>
+</div>
+
+<!-- 1b Game Over -->
+<div>
+<div class="dv-card" data-screen-label="1b Game Over" style="width:288px;height:512px;position:relative;overflow:hidden;background:linear-gradient(#1d1633 0 30%,#3a2354 30% 55%,#6e3a63 55% 75%,#c9556e 75% 100%)">
+  <div style="position:absolute;left:0;right:0;bottom:0;height:60px;background:#141026;border-top:4px solid #57e6d8"></div>
+  <div style="position:absolute;left:50%;bottom:60px;transform:translateX(-50%) rotate(5deg);transform-origin:bottom center;display:flex;flex-direction:column;align-items:center;opacity:.9">
+    <div style="width:92px;height:44px;background:#3e5a7e;border:3px solid #22304a;box-sizing:border-box;margin-left:26px"></div>
+    <div style="width:92px;height:44px;background:#3e5a7e;border:3px solid #22304a;box-sizing:border-box;margin-left:-10px;margin-top:-3px"></div>
+    <div style="width:104px;height:30px;background:#22304a;border:3px solid #57e6d8;box-sizing:border-box;margin-top:-3px"></div>
+  </div>
+  <div style="position:absolute;inset:0;background:rgba(10,8,24,.7)"></div>
+  <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-54%);width:224px;background:#141026;border:4px solid #57e6d8;box-shadow:0 0 22px rgba(87,230,216,.35);padding:18px 16px;display:flex;flex-direction:column;align-items:center;gap:12px">
+    <div style="font-size:26px;color:#ff6d8a;text-shadow:2px 2px 0 #000">遊戲結束</div>
+    <div style="width:100%;display:flex;flex-direction:column;gap:6px;font-size:14px;color:#c8d4e8">
+      <div style="display:flex;justify-content:space-between"><span>最終得分</span><span style="color:#57e6d8">4800</span></div>
+      <div style="display:flex;justify-content:space-between"><span>最高連擊</span><span>×6</span></div>
+      <div style="display:flex;justify-content:space-between"><span>樓層高度</span><span>12 F</span></div>
+    </div>
+    <div style="background:#57e6d8;color:#141026;border:3px solid #141026;box-shadow:0 4px 0 #0a0818;padding:8px 26px;font-size:16px;letter-spacing:3px">重新開始</div>
+    <div style="font-size:12px;color:#8fa0bd;border-bottom:2px solid rgba(143,160,189,.5);padding-bottom:1px">回主選單</div>
+  </div>
+</div>
+<div class="cap">Game Over 視窗 288×512</div>
+</div>
+</div>
+
+<!-- 1b 桌機版 -->
+<div class="dv-card" data-screen-label="1b 桌機版" style="width:1024px;height:576px;position:relative;overflow:hidden;background:linear-gradient(#1d1633 0 30%,#3a2354 30% 55%,#6e3a63 55% 75%,#c9556e 75% 100%);margin-top:14px">
+  <div style="position:absolute;top:36px;left:80px;width:4px;height:4px;background:#fff;box-shadow:120px 24px 0 rgba(255,255,255,.7),300px 10px 0 #fff,520px 44px 0 rgba(255,255,255,.6),700px 18px 0 #fff,820px 52px 0 rgba(255,255,255,.7),420px 66px 0 rgba(255,255,255,.5)"></div>
+  <div style="position:absolute;top:84px;right:130px;width:40px;height:40px;background:#f4ead8;box-shadow:0 0 0 5px rgba(244,234,216,.22)"></div>
+  <div style="position:absolute;top:150px;left:120px;width:64px;height:13px;background:#4a3663;box-shadow:13px -9px 0 #4a3663"></div>
+  <div style="position:absolute;top:120px;right:330px;width:72px;height:14px;background:#4a3663;box-shadow:-14px -9px 0 #4a3663"></div>
+  <div style="position:absolute;left:0;right:0;bottom:64px;display:flex;align-items:flex-end;gap:10px;padding:0 12px">
+    <div style="width:60px;height:118px;background:#241b3d;background-image:repeating-linear-gradient(0deg,transparent 0 10px,rgba(255,202,122,.45) 10px 14px,transparent 14px 20px)"></div><div style="width:44px;height:76px;background:#2c2148"></div><div style="width:70px;height:156px;background:#241b3d;background-image:repeating-linear-gradient(0deg,transparent 0 10px,rgba(255,202,122,.4) 10px 14px,transparent 14px 22px)"></div><div style="width:52px;height:98px;background:#2c2148;background-image:repeating-linear-gradient(0deg,transparent 0 9px,rgba(255,202,122,.4) 9px 12px,transparent 12px 18px)"></div><div style="width:64px;height:130px;background:#241b3d"></div><div style="width:46px;height:84px;background:#2c2148;background-image:repeating-linear-gradient(0deg,transparent 0 9px,rgba(255,202,122,.45) 9px 12px,transparent 12px 18px)"></div><div style="width:72px;height:146px;background:#241b3d;background-image:repeating-linear-gradient(0deg,transparent 0 10px,rgba(255,202,122,.4) 10px 14px,transparent 14px 22px)"></div><div style="width:50px;height:90px;background:#2c2148"></div><div style="width:66px;height:124px;background:#241b3d;background-image:repeating-linear-gradient(0deg,transparent 0 10px,rgba(255,202,122,.42) 10px 14px,transparent 14px 21px)"></div><div style="width:44px;height:100px;background:#2c2148"></div><div style="width:70px;height:138px;background:#241b3d;background-image:repeating-linear-gradient(0deg,transparent 0 10px,rgba(255,202,122,.4) 10px 14px,transparent 14px 22px)"></div><div style="width:54px;height:80px;background:#2c2148"></div>
+  </div>
+  <div style="position:absolute;left:0;right:0;bottom:0;height:64px;background:#141026;border-top:5px solid #57e6d8"></div>
+  <div style="position:absolute;top:70px;left:262px;right:262px;height:12px;background:repeating-linear-gradient(90deg,#ff8f5a 0 14px,#b85a34 14px 28px);border-top:3px solid #141026;border-bottom:3px solid #141026"></div>
+  <div style="position:absolute;top:118px;left:352px;right:352px;height:3px;background:repeating-linear-gradient(90deg,#57e6d8 0 6px,transparent 6px 14px);opacity:.45"></div>
+  <div style="position:absolute;top:82px;left:50%;width:3px;height:60px;background:#9db0c8;transform:rotate(-12deg);transform-origin:top center"></div>
+  <div style="position:absolute;top:138px;left:50%;transform:translateX(-6%)">
+    <div style="width:104px;height:50px;background:#3e5a7e;border:3px solid #22304a;box-sizing:border-box;padding:6px 8px"><div style="width:100%;height:100%;background-color:#3e5a7e;background-image:repeating-linear-gradient(90deg,transparent 0 13px,#3e5a7e 13px 23px),repeating-linear-gradient(0deg,#ffd98a 0 10px,#3e5a7e 10px 21px)"></div></div>
+  </div>
+  <div style="position:absolute;left:50%;bottom:64px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center">
+    <div style="width:104px;height:50px;background:#3e5a7e;border:3px solid #22304a;box-sizing:border-box;padding:6px 8px;margin-left:10px"><div style="width:100%;height:100%;background-color:#3e5a7e;background-image:repeating-linear-gradient(90deg,transparent 0 13px,#3e5a7e 13px 23px),repeating-linear-gradient(0deg,#ffd98a 0 10px,#3e5a7e 10px 21px)"></div></div>
+    <div style="width:104px;height:50px;background:#3e5a7e;border:3px solid #22304a;box-sizing:border-box;padding:6px 8px;margin-left:-6px;margin-top:-3px"><div style="width:100%;height:100%;background-color:#3e5a7e;background-image:repeating-linear-gradient(90deg,transparent 0 13px,#3e5a7e 13px 23px),repeating-linear-gradient(0deg,#ffd98a 0 10px,#3e5a7e 10px 21px)"></div></div>
+    <div style="width:104px;height:50px;background:#3e5a7e;border:3px solid #22304a;box-sizing:border-box;padding:6px 8px;margin-top:-3px"><div style="width:100%;height:100%;background-color:#3e5a7e;background-image:repeating-linear-gradient(90deg,transparent 0 13px,#3e5a7e 13px 23px),repeating-linear-gradient(0deg,#ffd98a 0 10px,#3e5a7e 10px 21px)"></div></div>
+    <div style="width:118px;height:34px;background:#22304a;border:3px solid #57e6d8;box-sizing:border-box;margin-top:-3px;display:flex;align-items:center;justify-content:center;font-size:13px;color:#57e6d8">地基</div>
+  </div>
+  <div style="position:absolute;top:16px;left:16px;display:flex;flex-direction:column;gap:8px">
+    <div style="background:#141026;color:#57e6d8;border:3px solid #57e6d8;padding:7px 14px;font-size:19px">分數 1200</div>
+    <div style="background:#ff8f5a;color:#141026;border:3px solid #141026;padding:4px 10px;font-size:15px;width:fit-content">連擊 ×3</div>
+  </div>
+  <div style="position:absolute;top:16px;right:16px;background:#141026;border:3px solid #57e6d8;padding:7px 12px;font-size:19px;color:#ff6d8a;letter-spacing:3px">♥♥♥</div>
+  <div style="position:absolute;left:0;right:0;bottom:20px;text-align:center;font-size:14px;color:#ffd98a;opacity:.9">按下 <span style="background:#141026;border:2px solid #57e6d8;padding:1px 12px;color:#57e6d8">空白鍵</span> 放下方塊</div>
+</div>
+<div class="cap">桌機版 遊戲中 1024×576</div>
+</div>
+
+</div>
+<p class="dv-next">下一步可以說：「用 <a class="dv-oid" href="#1a">1a</a> 做可玩原型」 · 「<a class="dv-oid" href="#1b">1b</a> 的天空換成深夜藍」 · 「再給我一個不同風格的方向」</p>
+</section>
+
+</x-dc>
+</body>
+</html>

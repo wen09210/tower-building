@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>疊疊大樓 CITY BLOXX</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cubic+11&family=DotGothic16&family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ui-text:#3a4148;
+    --gold:#f2c218;
+    --btn-yellow:#e8a428;
+    --btn-dark:#8a5a10;
+  }
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html,body{ width:100%; height:100%; overflow:hidden; background:#2c343c;
+    font-family:'Cubic 11','DotGothic16',monospace; -webkit-user-select:none; user-select:none;
+    touch-action:manipulation; }
+  #game-wrap{ position:fixed; inset:0; }
+  canvas{ display:block; width:100%; height:100%; image-rendering:pixelated; }
+
+  /* ---------- 共用 UI ---------- */
+  .pix-btn{
+    display:inline-block; font-family:inherit; font-size:20px; letter-spacing:4px;
+    background:var(--btn-yellow); color:#3a2a08;
+    border:3px solid var(--btn-dark); box-shadow:0 4px 0 var(--btn-dark);
+    padding:12px 34px; cursor:pointer; border-radius:0;
+  }
+  .pix-btn:active{ transform:translateY(3px); box-shadow:0 1px 0 var(--btn-dark); }
+  .pix-btn.secondary{
+    background:#fff; color:var(--ui-text); border:2px solid #6a7074;
+    box-shadow:0 3px 0 #6a7074; font-size:13px; letter-spacing:1px; padding:7px 16px;
+  }
+
+  .overlay{ position:absolute; inset:0; display:flex; flex-direction:column;
+    align-items:center; justify-content:center; pointer-events:none; }
+  .overlay > *{ pointer-events:auto; }
+  .hidden{ display:none !important; }
+
+  /* ---------- 主選單 ---------- */
+  #menu-title{
+    font-size:42px; color:#2c3e50; letter-spacing:6px; margin-bottom:6px;
+    text-shadow:
+      -2px -2px 0 #fff, 2px -2px 0 #fff, -2px 2px 0 #fff, 2px 2px 0 #fff,
+      -2px 0 0 #fff, 2px 0 0 #fff, 0 -2px 0 #fff, 0 2px 0 #fff;
+  }
+  #menu-sub{ font-family:'Press Start 2P',monospace; font-size:8px; color:#b87c14;
+    letter-spacing:6px; margin-bottom:110px; }
+  #menu .pix-btn{ margin-bottom:14px; }
+
+  /* ---------- HUD ---------- */
+  #hud{ position:absolute; inset:0; pointer-events:none; }
+  #combo-bar-wrap{
+    position:absolute; top:10px; left:12px; right:56px; height:14px;
+    background:#9aa0a3; border:2px solid #6a7074; border-radius:7px; overflow:hidden;
+  }
+  #combo-bar{ height:100%; width:0%; background:var(--gold); transition:width .25s; }
+  #combo-mult{ position:absolute; top:8px; right:14px; font-size:15px; color:#fff;
+    text-shadow:1px 1px 0 #4a5054; }
+
+  #coin-box{ position:absolute; top:34px; right:14px; display:flex; align-items:center;
+    gap:6px; font-size:18px; color:var(--ui-text); text-shadow:1px 1px 0 #fff; }
+  #coin-icon{ width:20px; height:20px; border-radius:50%; background:#f2b830;
+    border:2px solid #b87c14; color:#8a5a10; font-size:12px; line-height:16px;
+    text-align:center; font-weight:bold; }
+  #coin-float{ position:absolute; top:14px; right:18px; font-size:15px; color:var(--gold);
+    text-shadow:1px 1px 0 #8a5a10; opacity:0; }
+  #coin-float.pop{ animation:floatUp .8s ease-out; }
+  @keyframes floatUp{ 0%{opacity:1; transform:translateY(12px);} 100%{opacity:0; transform:translateY(-14px);} }
+
+  #lives-box{ position:absolute; left:14px; bottom:52px; display:flex;
+    flex-direction:column-reverse; gap:3px; }
+  .life-cube{ width:10px; height:10px; background:var(--gold); border:1px solid #8a5a10; }
+  .life-cube.lost{ background:#9aa0a3; border-color:#6a7074; }
+
+  #floor-box{ position:absolute; left:12px; bottom:18px; background:#2c2c2c;
+    color:var(--gold); font-size:16px; letter-spacing:2px; padding:5px 12px; border-radius:4px; }
+  #timer-box{ position:absolute; right:14px; bottom:20px; font-size:17px; color:#fff;
+    text-shadow:1px 1px 0 #4a5054; }
+  #hint-box{ position:absolute; left:0; right:0; bottom:20px; text-align:center;
+    font-size:14px; color:#8b9296; text-shadow:1px 1px 0 rgba(255,255,255,.35); }
+  #hint-box .key{ display:inline-block; background:#fff; border:2px solid #6a7074;
+    border-radius:9px; padding:1px 9px; color:var(--ui-text); font-size:12px; margin:0 3px; }
+
+  /* ---------- Perfect ---------- */
+  #perfect-box{ position:absolute; left:0; right:0; top:26%; text-align:center;
+    pointer-events:none; opacity:0; }
+  #perfect-box.show{ animation:perfectPop 1s ease-out; }
+  @keyframes perfectPop{
+    0%{opacity:0; transform:scale(.4);}
+    15%{opacity:1; transform:scale(1.15);}
+    28%{transform:scale(1);}
+    75%{opacity:1;}
+    100%{opacity:0;}
+  }
+  #perfect-text{ font-family:'Press Start 2P',monospace; font-size:19px; color:var(--gold);
+    text-shadow:
+      -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff,
+      3px 3px 0 #8a5a10; letter-spacing:2px; }
+  #perfect-sub{ margin-top:10px; font-size:15px; color:#fff; text-shadow:1px 1px 0 #4a5054;
+    letter-spacing:3px; }
+
+  /* ---------- Game Over ---------- */
+  #gameover-dialog{
+    width:262px; background:#e6e8ea; border:4px solid #6a7074;
+    box-shadow:0 6px 0 #4a5054; text-align:center;
+  }
+  #gameover-dialog h2{
+    background:var(--btn-yellow); border-bottom:4px solid var(--btn-dark);
+    color:#3a2a08; font-size:24px; font-weight:normal; letter-spacing:8px; padding:12px 0;
+  }
+  #go-stats{ padding:16px 22px 6px; }
+  .go-row{ display:flex; justify-content:space-between; font-size:14px;
+    color:var(--ui-text); margin-bottom:11px; letter-spacing:2px; }
+  .go-row b{ color:#c98a10; font-weight:normal; }
+  #gameover-dialog .pix-btn{ font-size:17px; padding:10px 26px; margin:8px 0 4px; }
+  #go-menu-link{ display:block; font-size:13px; color:var(--ui-text); margin:8px 0 16px;
+    text-decoration:underline; cursor:pointer; letter-spacing:2px; }
+</style>
+</head>
+<body>
+<div id="game-wrap">
+  <canvas id="cv"></canvas>
+
+  <!-- 主選單 -->
+  <div id="menu" class="overlay">
+    <div id="menu-title">疊疊大樓</div>
+    <div id="menu-sub">CITY BLOXX</div>
+    <button id="btn-start" class="pix-btn">開始遊戲</button>
+    <button id="btn-sound" class="pix-btn secondary">♪ 音效:開</button>
+  </div>
+
+  <!-- HUD -->
+  <div id="hud" class="hidden">
+    <div id="combo-bar-wrap" class="hidden"><div id="combo-bar"></div></div>
+    <div id="combo-mult" class="hidden">×1</div>
+    <div id="coin-float">+0</div>
+    <div id="coin-box"><span id="coin-icon">$</span><span id="coin-num">0</span></div>
+    <div id="lives-box"></div>
+    <div id="floor-box">000 F</div>
+    <div id="timer-box">0:00</div>
+    <div id="hint-box"></div>
+    <div id="perfect-box">
+      <div id="perfect-text">PERFECT!</div>
+      <div id="perfect-sub">+300　連擊 ×1</div>
+    </div>
+  </div>
+
+  <!-- Game Over -->
+  <div id="gameover" class="overlay hidden">
+    <div id="gameover-dialog">
+      <h2>遊戲結束</h2>
+      <div id="go-stats">
+        <div class="go-row"><span>最終得分</span><b id="go-score">0</b></div>
+        <div class="go-row"><span>最高連擊</span><b id="go-combo">×0</b></div>
+        <div class="go-row"><span>樓層高度</span><b id="go-floor">0 F</b></div>
+        <div class="go-row"><span>獲得金幣</span><b id="go-coins">$ 0</b></div>
+      </div>
+      <button id="btn-restart" class="pix-btn">重新開始</button>
+      <span id="go-menu-link">回主選單</span>
+    </div>
+  </div>
+</div>
+
+<script>
+'use strict';
+/* ============================================================
+ * 疊疊大樓 CITY BLOXX — 像素風疊房子遊戲(設計方向 2a「日光工地」)
+ * HTML5 Canvas + 原生 JavaScript,單一檔案即可執行
+ * ============================================================ */
+
+/* ---------- Design Tokens ---------- */
+const C = {
+  sky:'#d2d6d8', sky2:'#cdd2d4',
+  grayBldg:'#b8bcbe', grayBldg2:'#a8adb0', stripeA:'#a2a8ab', stripeB:'#b4babd', grayBldg3:'#babfc2',
+  blueGlass:'#8fc0e4', blueGlassLight:'#c6e4f6', blueBldgBase:'#e6eaec',
+  dirt:'#a06c30', dirtClod:'#7c5222',
+  platTop:'#cdcfd1', platBody:'#aeb0b2', platBottom:'#838587',
+  blk1:'#f6bc48', blk2:'#eaa82c', blk3:'#d98f1a', blk4:'#b87814', blkBorder:'#8a5a10',
+  gold:'#f2c218', goldLight:'#ffd84a',
+  winDark:'#24486a', winDark2:'#16324a', glassA:'#8ec2e8', glassB:'#a9d4f2', silver:'#c4c8ca',
+  capLight:'#eceeef', capDark:'#b4b8ba',
+  rope:'#1c1c1c', hook:'#d8a828',
+  fenceWire:'#c8ccce', fenceWireLine:'rgba(90,96,100,.55)', fenceTop:'#6a7074',
+  woodPlank:'#d9b667', woodGap:'#c39c4e', woodTop:'#a87f34',
+  treeA:'#3f8030', treeB:'#56a340', cone:'#e06a28',
+};
+
+/* ---------- 基本常數(世界座標:x 向右、y 向上,0 = 地面) ---------- */
+const VIEW_H   = 512;          // 邏輯視野高度(手機直式設計稿高度)
+const BLOCK_W  = 78, BLOCK_H = 78;
+const BASE_W   = 86, BASE_H  = 82;
+const GRAVITY  = 1500;         // units/s^2
+const PERFECT_TOL   = 5;       // 中心偏差 ≤5px → Perfect
+const MISS_RATIO    = 0.5;     // 偏差 > 50% 方塊寬 → 滑落
+const ROPE_LEN      = 190;
+const SWING_SPEED0  = 1.7;     // rad/s
+const MAX_ANGLE0    = 13 * Math.PI/180;
+
+/* ---------- Canvas ---------- */
+const cv = document.getElementById('cv');
+const ctx = cv.getContext('2d');
+let dpr = 1, viewW = 288, scale = 1, isTouch = matchMedia('(pointer:coarse)').matches;
+
+function resize(){
+  dpr = Math.min(devicePixelRatio || 1, 2);
+  cv.width  = innerWidth * dpr;
+  cv.height = innerHeight * dpr;
+  scale = cv.height / VIEW_H;
+  viewW = cv.width / scale;
+  ctx.imageSmoothingEnabled = false;
+}
+addEventListener('resize', resize);
+resize();
+
+/* ---------- 狀態 ---------- */
+let gameState = 'menu';                     // menu / playing / gameover
+let craneT = 0, craneAngle = 0, maxAngle = MAX_ANGLE0, swingSpeed = SWING_SPEED0;
+let hangingBlock = null;                    // {x, y, angle}(由 crane 推導)
+let fallingBlock = null;                    // {x, y, vy, w, h}
+let tower = [];                             // [{x, y, w, h, perfect}] y = 底部
+let swayAngle = 0, swayVelocity = 0;
+let score = 0, combo = 0, maxCombo = 0, coins = 0, lives = 3, floorCount = 0;
+let cameraY = 0, cameraTarget = 0;
+let playTime = 0, respawnTimer = 0;
+let missBlocks = [];                        // 滑落中的方塊 {x,y,vx,vy,rot,vr,w,h}
+let stars = [];                             // Perfect 星星粒子
+let parachuter = null;                      // 彩蛋小人
+let gameOverTilt = 0;
+let soundOn = true;
+let menuT = 0;
+
+/* ---------- 音效(WebAudio 合成,無外部檔案) ---------- */
+let AC = null;
+function beep(freq, dur, type='square', vol=0.12, slide=0){
+  if(!soundOn) return;
+  try{
+    AC = AC || new (window.AudioContext || window.webkitAudioContext)();
+    if(AC.state === 'suspended') AC.resume();
+    const o = AC.createOscillator(), g = AC.createGain();
+    o.type = type; o.frequency.value = freq;
+    if(slide) o.frequency.linearRampToValueAtTime(freq+slide, AC.currentTime+dur);
+    g.gain.setValueAtTime(vol, AC.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001, AC.currentTime+dur);
+    o.connect(g).connect(AC.destination);
+    o.start(); o.stop(AC.currentTime+dur);
+  }catch(e){}
+}
+const sfx = {
+  drop:   ()=> beep(300, .12, 'square', .1, -120),
+  land:   ()=> beep(180, .15, 'square', .14),
+  perfect:()=> { beep(660,.1); setTimeout(()=>beep(880,.1),90); setTimeout(()=>beep(1100,.16),180); },
+  miss:   ()=> beep(220, .4, 'sawtooth', .12, -160),
+  over:   ()=> { beep(330,.2); setTimeout(()=>beep(247,.2),200); setTimeout(()=>beep(165,.45),400); },
+  click:  ()=> beep(520, .07),
+};
+
+/* ---------- DOM ---------- */
+const $ = id => document.getElementById(id);
+const menuEl = $('menu'), hudEl = $('hud'), goEl = $('gameover');
+const comboBarWrap = $('combo-bar-wrap'), comboBar = $('combo-bar'), comboMult = $('combo-mult');
+const coinNum = $('coin-num'), coinFloat = $('coin-float');
+const livesBox = $('lives-box'), floorBox = $('floor-box'), timerBox = $('timer-box'), hintBox = $('hint-box');
+const perfectBox = $('perfect-box'), perfectSub = $('perfect-sub');
+
+$('btn-start').addEventListener('click', e => { e.stopPropagation(); sfx.click(); startGame(); });
+$('btn-sound').addEventListener('click', e => {
+  e.stopPropagation();
+  soundOn = !soundOn;
+  $('btn-sound').textContent = soundOn ? '♪ 音效:開' : '♪ 音效:關';
+  if(soundOn) sfx.click();
+});
+$('btn-restart').addEventListener('click', e => { e.stopPropagation(); sfx.click(); startGame(); });
+$('go-menu-link').addEventListener('click', e => { e.stopPropagation(); sfx.click(); toMenu(); });
+
+/* ---------- 輸入 ---------- */
+function onAction(){
+  if(gameState !== 'playing') return;
+  if(hangingBlock && !fallingBlock){
+    fallingBlock = { x:hangingBlock.x, y:hangingBlock.y, vy:0, w:BLOCK_W, h:BLOCK_H };
+    hangingBlock = null;
+    sfx.drop();
+  }
+}
+addEventListener('pointerdown', e => {
+  if(gameState === 'playing' && !e.target.closest('button')) onAction();
+});
+addEventListener('keydown', e => {
+  if(e.code === 'Space'){ e.preventDefault(); onAction(); }
+});
+
+/* ---------- 流程 ---------- */
+function startGame(){
+  gameState = 'playing';
+  tower = [{ x:0, y:0, w:BASE_W, h:BASE_H, perfect:false, isBase:true }];
+  score = 0; combo = 0; maxCombo = 0; coins = 0; lives = 3; floorCount = 0;
+  cameraY = 0; cameraTarget = 0; playTime = 0; respawnTimer = 0;
+  swayAngle = 0; swayVelocity = 0; gameOverTilt = 0;
+  missBlocks = []; stars = []; parachuter = null; fallingBlock = null;
+  craneT = 0; maxAngle = MAX_ANGLE0; swingSpeed = SWING_SPEED0;
+  spawnHanging();
+  menuEl.classList.add('hidden');
+  goEl.classList.add('hidden');
+  hudEl.classList.remove('hidden');
+  comboBarWrap.classList.add('hidden');
+  comboMult.classList.add('hidden');
+  hintBox.innerHTML = isTouch ? '點擊 放下方塊'
+    : '按下 <span class="key">空白鍵</span> 放下方塊';
+  hintBox.style.opacity = 1;
+  renderLives(); updateHUD();
+}
+function toMenu(){
+  gameState = 'menu';
+  goEl.classList.add('hidden');
+  hudEl.classList.add('hidden');
+  menuEl.classList.remove('hidden');
+  tower = []; fallingBlock = null; hangingBlock = null;
+  cameraY = 0; cameraTarget = 0;
+}
+function gameOver(){
+  gameState = 'gameover';
+  sfx.over();
+  $('go-score').textContent = score;
+  $('go-combo').textContent = '×' + maxCombo;
+  $('go-floor').textContent = floorCount + ' F';
+  $('go-coins').textContent = '$ ' + coins;
+  setTimeout(()=>{
+    hudEl.classList.add('hidden');
+    goEl.classList.remove('hidden');
+  }, 900);
+}
+
+function spawnHanging(){
+  hangingBlock = { x:0, y:0 };
+}
+
+/* ---------- 判定與落地 ---------- */
+function landBlock(){
+  const top = tower[tower.length-1];
+  const dx = fallingBlock.x - top.x;
+  const adx = Math.abs(dx);
+
+  if(adx > BLOCK_W * MISS_RATIO){                 /* 偏差過大 → 滑落扣命 */
+    missBlocks.push({
+      x:fallingBlock.x, y:fallingBlock.y, w:BLOCK_W, h:BLOCK_H,
+      vx: dx > 0 ? 160 : -160, vy: -120, rot:0, vr: dx > 0 ? 3.4 : -3.4,
+    });
+    fallingBlock = null;
+    combo = 0;
+    lives--;
+    renderLives();
+    sfx.miss();
+    addSway(dx * 0.4);
+    if(lives <= 0){ gameOver(); return; }
+    respawnTimer = 0.7;
+    updateHUD();
+    return;
+  }
+
+  const perfect = adx <= PERFECT_TOL;
+  const nx = perfect ? top.x : fallingBlock.x;
+  tower.push({ x:nx, y:top.y + top.h, w:BLOCK_W, h:BLOCK_H, perfect });
+  fallingBlock = null;
+  floorCount++;
+
+  if(perfect){
+    combo++;
+    maxCombo = Math.max(maxCombo, combo);
+    const bonus = 100 + 100 * combo;              // 每層 +100,Perfect 依連擊加成
+    score += bonus;
+    const coinGain = 5 + combo * 2;
+    coins += coinGain;
+    showPerfect(bonus, combo, coinGain);
+    spawnStars();
+    sfx.perfect();
+    if(combo >= 4 && !parachuter) spawnParachuter();  // 彩蛋:小人撐傘飄落
+  }else{
+    combo = 0;
+    score += 100;
+    coins += 2;
+    floatCoin(2);
+    sfx.land();
+    addSway(dx);                                  // 依偏差比例晃動
+  }
+
+  // 難度緩升
+  maxAngle  = Math.min(MAX_ANGLE0 + floorCount * 0.0035, 24*Math.PI/180);
+  swingSpeed = Math.min(SWING_SPEED0 + floorCount * 0.018, 3.2);
+
+  respawnTimer = 0.55;
+  if(floorCount === 1) hintBox.style.opacity = 0;
+  updateHUD();
+}
+
+function addSway(dx){
+  swayVelocity += (dx / BLOCK_W) * 0.9 / Math.max(1, Math.sqrt(tower.length) * 0.6);
+}
+
+/* ---------- HUD ---------- */
+function renderLives(){
+  livesBox.innerHTML = '';
+  for(let i=0;i<3;i++){
+    const d = document.createElement('div');
+    d.className = 'life-cube' + (i < lives ? '' : ' lost');
+    livesBox.appendChild(d);
+  }
+}
+function updateHUD(){
+  coinNum.textContent = coins;
+  floorBox.textContent = String(floorCount).padStart(3,'0') + ' F';
+  if(combo >= 2){
+    comboBarWrap.classList.remove('hidden');
+    comboMult.classList.remove('hidden');
+    comboBar.style.width = Math.min(combo/10*100, 100) + '%';
+    comboMult.textContent = '×' + combo;
+  }else{
+    comboBarWrap.classList.add('hidden');
+    comboMult.classList.add('hidden');
+  }
+}
+function floatCoin(n){
+  coinFloat.textContent = '+' + n;
+  coinFloat.classList.remove('pop');
+  void coinFloat.offsetWidth;
+  coinFloat.classList.add('pop');
+}
+function showPerfect(bonus, cb, coinGain){
+  perfectSub.textContent = '+' + bonus + '　連擊 ×' + cb;
+  perfectBox.classList.remove('show');
+  void perfectBox.offsetWidth;
+  perfectBox.classList.add('show');
+  floatCoin(coinGain);
+}
+
+/* ---------- 粒子/彩蛋 ---------- */
+function spawnStars(){
+  const top = tower[tower.length-1];
+  for(let i=0;i<12;i++){
+    const a = Math.random()*Math.PI*2;
+    const sp = 60 + Math.random()*130;
+    stars.push({
+      x: top.x + (Math.random()-.5)*BLOCK_W,
+      y: top.y + top.h/2 + (Math.random()-.5)*BLOCK_H,
+      vx: Math.cos(a)*sp, vy: Math.sin(a)*sp + 60,
+      life: .5, t:0, big: Math.random() < .5,
+    });
+  }
+}
+function spawnParachuter(){
+  parachuter = { x:(Math.random()<.5?-1:1) * (viewW*0.3), y:cameraY + VIEW_H + 40, sway:Math.random()*6 };
+}
+
+/* ---------- 更新 ---------- */
+let lastTime = performance.now();
+function update(dt){
+  menuT += dt;
+  if(gameState === 'menu'){ craneT += dt; craneAngle = (MAX_ANGLE0*0.5)*Math.sin(craneT*1.1); return; }
+
+  if(gameState === 'gameover'){
+    gameOverTilt = Math.min(gameOverTilt + dt*10, 7);   // 塔傾斜 7°
+    updateMissBlocks(dt);
+    return;
+  }
+
+  playTime += dt;
+
+  /* 階段一:鐘擺擺動 */
+  craneT += dt;
+  craneAngle = maxAngle * Math.sin(craneT * swingSpeed);
+  const pivotX = 0, pivotY = cameraY + VIEW_H + 60;
+  if(hangingBlock){
+    hangingBlock.x = pivotX + Math.sin(craneAngle) * ROPE_LEN;
+    hangingBlock.y = pivotY - Math.cos(craneAngle) * ROPE_LEN - 10 - BLOCK_H; // -10 = 吊鉤高度
+  }
+
+  /* 階段一:重力下落與吸附 */
+  if(fallingBlock){
+    fallingBlock.vy += GRAVITY * dt;
+    fallingBlock.y -= fallingBlock.vy * dt;
+    const top = tower[tower.length-1];
+    const landY = top.y + top.h;
+    if(fallingBlock.y <= landY){
+      fallingBlock.y = landY;
+      landBlock();
+    }else if(fallingBlock.y < cameraY - 200){
+      fallingBlock = null; respawnTimer = 0.5;
+    }
+  }else if(!hangingBlock && gameState === 'playing'){
+    respawnTimer -= dt;
+    if(respawnTimer <= 0) spawnHanging();
+  }
+
+  /* 階段二:塔晃動(以塔底為軸的阻尼簡諧擺) */
+  const K = 14, DAMP = 2.2;
+  swayVelocity += (-K * swayAngle - DAMP * swayVelocity) * dt;
+  swayAngle += swayVelocity * dt;
+
+  /* 階段三:鏡頭平滑上移 */
+  const towerTop = tower.length ? tower[tower.length-1].y + tower[tower.length-1].h : 0;
+  if(towerTop - cameraY > VIEW_H * 0.5){
+    cameraTarget = towerTop - VIEW_H * 0.42;
+  }
+  cameraY += (cameraTarget - cameraY) * Math.min(dt * 4, 1);   // lerp ease-out
+
+  updateMissBlocks(dt);
+
+  /* 星星粒子 */
+  for(const s of stars){
+    s.t += dt; s.x += s.vx*dt; s.y += s.vy*dt; s.vy -= 300*dt;
+  }
+  stars = stars.filter(s => s.t < s.life);
+
+  /* 彩蛋小人 */
+  if(parachuter){
+    parachuter.y -= 55 * dt;
+    parachuter.sway += dt;
+    parachuter.x += Math.sin(parachuter.sway*1.5) * 18 * dt;
+    if(parachuter.y < cameraY - 60) parachuter = null;
+  }
+
+  /* HUD 計時 */
+  const m = Math.floor(playTime/60), s = Math.floor(playTime%60);
+  timerBox.textContent = m + ':' + String(s).padStart(2,'0');
+}
+
+function updateMissBlocks(dt){
+  for(const b of missBlocks){
+    b.vy += GRAVITY * dt * 0.7;
+    b.x += b.vx*dt; b.y -= b.vy*dt; b.rot += b.vr*dt;
+  }
+  missBlocks = missBlocks.filter(b => b.y > cameraY - 300);
+}
+
+/* ============================================================
+ * 繪製 — 全程硬邊緣像素風
+ * ============================================================ */
+function wx(x){ return Math.round((viewW/2 + x) * scale) / scale; }   // world→view x
+function wy(y){ return Math.round((VIEW_H - (y - cameraY)) * scale) / scale; } // world→view y(y 向上)
+function rect(x, y, w, h, color){   // view 座標,整數對齊
+  ctx.fillStyle = color;
+  ctx.fillRect(Math.round(x), Math.round(y), Math.round(w), Math.round(h));
+}
+
+/* ---------- 背景 ----------
+ * 「一張很長的圖」:天際線在世界座標中固定生成一次,
+ * 與鏡頭 1:1 捲動(無視差)——只有疊高、鏡頭上移時背景才跟著往上捲。 */
+const SKY_BLUE = '#b7e2f4';
+
+function seededRng(seed){
+  return function(){
+    seed |= 0; seed = seed + 0x6D2B79F5 | 0;
+    let t = Math.imul(seed ^ seed >>> 15, 1 | seed);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  };
+}
+
+/* 生成天際線(固定種子 → 每次開啟長相相同) */
+const SKYLINE = (() => {
+  const r = seededRng(20260712);
+  const pick = arr => arr[Math.floor(r()*arr.length)];
+  const bands = [
+    // 後排:淡色高樓,常見超高尖塔
+    { colors:['#cdd7db','#c3cdd2','#d4dce0'], hMin:420, hMax:1100, spire:.45, spireH:[1500,3200],
+      wMin:22, wMax:52, gapMin:-8, gapMax:8,  windows:false, antenna:.7 },
+    // 中排:中灰
+    { colors:['#9fabb3','#93a0a8','#aab5bc'], hMin:220, hMax:680,  spire:.15, spireH:[900,1600],
+      wMin:28, wMax:64, gapMin:-10, gapMax:12, windows:false, antenna:.45 },
+    // 前排:米色/深灰,帶窗格
+    { colors:['#d8d3c4','#8b9aa5','#b9c3c9','#7f8b94'], hMin:80, hMax:360, spire:0, spireH:[0,0],
+      wMin:34, wMax:78, gapMin:2, gapMax:18, windows:true, antenna:.15 },
+  ];
+  const out = [];
+  for(const b of bands){
+    const list = [];
+    let x = -560;
+    while(x < 560){
+      const w = b.wMin + r()*(b.wMax - b.wMin);
+      let h = b.hMin + r()*(b.hMax - b.hMin);
+      if(r() < b.spire) h = b.spireH[0] + r()*(b.spireH[1] - b.spireH[0]);
+      list.push({
+        x, w, h,
+        color: pick(b.colors),
+        windows: b.windows,
+        winColor: '#5b6a76',
+        antenna: r() < b.antenna,
+        antH: 22 + r()*30,
+      });
+      x += w + b.gapMin + r()*(b.gapMax - b.gapMin);
+    }
+    out.push(list);
+  }
+  return out;
+})();
+
+function drawSkyline(){
+  const bottomY = Math.min(wy(0), VIEW_H);
+  if(bottomY < 0) return;
+  for(const band of SKYLINE){
+    for(const b of band){
+      const sx = viewW/2 + b.x;
+      if(sx + b.w < 0 || sx > viewW) continue;
+      const topY = wy(b.h);
+      if(topY > VIEW_H) continue;
+      const y0 = Math.max(topY, 0);
+      const bh = bottomY - y0;
+      if(bh > 0) rect(sx, y0, b.w, bh, b.color);
+
+      // 窗格(錨定世界座標,跟著長圖捲動)
+      if(b.windows && bh > 0){
+        const rowP = 26, colP = 16;
+        for(let wyRow = 18; wyRow < b.h - 14; wyRow += rowP){
+          const ry = wy(wyRow);
+          if(ry < y0 || ry > bottomY - 6) continue;
+          for(let cx = sx + 6; cx < sx + b.w - 10; cx += colP)
+            rect(cx, ry, 7, 9, b.winColor);
+        }
+      }
+      // 天線 + 紅燈(參考圖樣式)
+      if(b.antenna && topY > -40 && topY < VIEW_H){
+        const ax = sx + b.w/2 - 1;
+        rect(ax, topY - b.antH, 2, b.antH, b.color);
+        rect(ax - 1, topY - b.antH - 3, 4, 3, '#e04838');
+      }
+    }
+  }
+}
+
+function drawBackground(){
+  // 天空(參考圖:淺藍)
+  ctx.fillStyle = SKY_BLUE;
+  ctx.fillRect(0, 0, viewW, VIEW_H);
+
+  drawSkyline();
+
+  // 地面(泥土)只在低空可見
+  const groundScreenY = wy(0);
+  if(groundScreenY < VIEW_H + 80){
+    rect(0, groundScreenY, viewW, VIEW_H - groundScreenY + 80, C.dirt);
+    // 土塊
+    for(let i=0;i<10;i++){
+      const gx = ((i*97) % Math.max(viewW,1)) - viewW/2;
+      const gy = 12 + (i*53) % 55;
+      rect(wx(gx), groundScreenY + gy, 8, 5, C.dirtClod);
+    }
+    drawSiteProps(groundScreenY);
+    drawPlatform();
+  }
+}
+
+function drawSiteProps(groundY){
+  // 左側鐵網圍籬
+  const fh = 46, fw = viewW*0.30;
+  const fx = 0, fy = groundY - fh;
+  ctx.save();
+  ctx.beginPath(); ctx.rect(fx, fy, fw, fh); ctx.clip();
+  rect(fx, fy, fw, fh, C.fenceWire);
+  ctx.strokeStyle = C.fenceWireLine; ctx.lineWidth = 1.5;
+  for(let i=-fh;i<fw+fh;i+=9){
+    ctx.beginPath(); ctx.moveTo(fx+i, fy); ctx.lineTo(fx+i+fh, fy+fh); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(fx+i+fh, fy); ctx.lineTo(fx+i, fy+fh); ctx.stroke();
+  }
+  ctx.restore();
+  rect(fx, fy-4, fw, 4, C.fenceTop);
+
+  // 右側木板圍籬
+  const ww = viewW*0.30, wxp = viewW - ww, wh = 40, wyp = groundY - wh;
+  for(let px = wxp; px < viewW; px += 17){
+    rect(px, wyp, 14, wh, C.woodPlank);
+    rect(px+14, wyp, 3, wh, C.woodGap);
+  }
+  rect(wxp, wyp-4, ww, 4, C.woodTop);
+
+  // 綠樹(兩色像素簇)
+  drawTree(viewW*0.72, groundY - 40);
+  // 三角錐
+  drawCone(viewW*0.62, groundY);
+}
+function drawTree(x, y){
+  rect(x, y, 44, 26, C.treeA);
+  rect(x+6, y-8, 30, 12, C.treeA);
+  rect(x+4, y+4, 14, 10, C.treeB);
+  rect(x+24, y-4, 12, 8, C.treeB);
+  rect(x+30, y+12, 10, 8, C.treeB);
+}
+function drawCone(x, y){
+  rect(x+2, y-14, 10, 5, C.cone);
+  rect(x+4, y-9, 6, 2, '#fff');
+  rect(x+3, y-7, 8, 4, C.cone);
+  rect(x, y-3, 14, 3, C.cone);
+}
+
+function drawPlatform(){
+  // 中央混凝土平台
+  const pw = 130, ph = 20;
+  const px = wx(-pw/2), py = wy(0);
+  rect(px, py, pw, 5, C.platTop);
+  rect(px, py+5, pw, ph-8, C.platBody);
+  rect(px, py+ph-3, pw, 3, C.platBottom);
+}
+
+/* ---------- 方塊 ---------- */
+function drawBlock(sx, sy, w, h, opts = {}){
+  // sx, sy = view 座標左上角
+  const b = 3;   // 邊框
+  // 外框
+  rect(sx, sy, w, h, C.blkBorder);
+  // 本體橫向明暗(左亮右暗)
+  const ix = sx+b, iy = sy+b, iw = w-2*b, ih = h-2*b;
+  rect(ix, iy, 9, ih, C.blk1);
+  rect(ix+9, iy, iw*0.68-9, ih, C.blk2);
+  rect(ix+iw*0.68, iy, iw*0.20, ih, C.blk3);
+  rect(ix+iw*0.88, iy, iw*0.12, ih, C.blk4);
+  // 底部內陰影
+  ctx.fillStyle = 'rgba(122,74,8,.4)';
+  ctx.fillRect(Math.round(ix), Math.round(sy+h-b-7), Math.round(iw), 7);
+  // 頂蓋銀灰金屬條
+  rect(ix, iy, iw, 4, C.capLight);
+  rect(ix, iy+4, iw, 3, C.capDark);
+
+  if(opts.isBase){
+    // 地基:單一大玻璃門
+    const dw = w*0.42, dh = h*0.58;
+    const dx = sx + (w-dw)/2, dy = sy + h - b - dh;
+    rect(dx-3, dy-3, dw+6, dh+3, C.silver);
+    rect(dx, dy, dw, dh, C.winDark);
+    rect(dx+3, dy+3, dw/2-4, dh-6, C.glassA);
+    rect(dx+dw/2+1, dy+3, dw/2-4, dh-6, C.glassB);
+  }else{
+    // 窗戶 ×2
+    const winW = w*0.24, winH = h*0.42;
+    const wy0 = sy + h*0.30;
+    for(const ox of [w*0.17, w*0.59]){
+      const dx = sx + ox;
+      rect(dx-2, wy0-2, winW+4, winH+4, C.silver);
+      rect(dx, wy0, winW, winH, C.winDark);
+      rect(dx+2, wy0+2, winW/2-3, winH-4, C.glassA);
+      rect(dx+winW/2+1, wy0+2, winW/2-3, winH-4, C.glassB);
+    }
+  }
+
+  if(opts.perfectGlow){
+    ctx.save();
+    ctx.strokeStyle = C.gold;
+    ctx.lineWidth = 3;
+    ctx.globalAlpha = 0.9;
+    ctx.strokeRect(Math.round(sx)+1.5, Math.round(sy)+1.5, w-3, h-3);
+    ctx.globalAlpha = 0.25;
+    ctx.strokeRect(Math.round(sx)-2.5, Math.round(sy)-2.5, w+5, h+5);
+    ctx.restore();
+  }
+  if(opts.hoop){
+    // 金色吊環(頂部中央)
+    const hx = sx + w/2;
+    ctx.strokeStyle = C.blkBorder; ctx.lineWidth = 2;
+    ctx.fillStyle = C.hook;
+    ctx.beginPath(); ctx.arc(hx, sy, 6, 0, Math.PI*2); ctx.fill(); ctx.stroke();
+    ctx.fillStyle = C.sky;
+    ctx.beginPath(); ctx.arc(hx, sy, 2.4, 0, Math.PI*2); ctx.fill();
+  }
+}
+
+/* ---------- 吊車 ---------- */
+function drawCrane(){
+  // 吊鉤位置永遠用同一套鐘擺公式計算,放下方塊後繩子不會跳位/閃爍
+  const pivotSX = wx(0), pivotSY = wy(cameraY + VIEW_H + 60);
+  const hookSX = pivotSX + Math.sin(craneAngle) * ROPE_LEN;
+  const hookSY = pivotSY + Math.cos(craneAngle) * ROPE_LEN;
+
+  // 吊索
+  ctx.strokeStyle = C.rope; ctx.lineWidth = 5;
+  ctx.beginPath();
+  ctx.moveTo(pivotSX, pivotSY);
+  ctx.lineTo(hookSX, hookSY);
+  ctx.stroke();
+  // 吊鉤(金色開口向上)
+  ctx.strokeStyle = C.hook; ctx.lineWidth = 4;
+  ctx.beginPath(); ctx.arc(hookSX, hookSY + 5, 6, Math.PI*0.15, Math.PI*0.85, false); ctx.stroke();
+
+  if(hangingBlock){
+    // 白色掉落軌跡弧線
+    ctx.save();
+    ctx.strokeStyle = 'rgba(255,255,255,.75)';
+    ctx.lineWidth = 3;
+    ctx.setLineDash([6,6]);
+    ctx.beginPath();
+    ctx.arc(pivotSX, pivotSY, ROPE_LEN + BLOCK_H*0.6, Math.PI/2 - maxAngle*0.9, Math.PI/2 + maxAngle*0.9);
+    ctx.stroke();
+    ctx.restore();
+
+    // 吊掛方塊(隨擺動傾斜,掛在吊鉤下方)
+    ctx.save();
+    ctx.translate(hookSX, hookSY + 10);
+    ctx.rotate(craneAngle * 0.9);
+    drawBlock(-BLOCK_W/2, 0, BLOCK_W, BLOCK_H, { hoop:true });
+    ctx.restore();
+  }
+}
+
+/* ---------- 塔 ---------- */
+function drawTower(){
+  if(!tower.length) return;
+  const baseX = wx(tower[0].x), baseY = wy(0);
+  ctx.save();
+  const tilt = gameState === 'gameover' ? gameOverTilt*Math.PI/180 : swayAngle*0.05;
+  ctx.translate(baseX, baseY);
+  ctx.rotate(tilt);
+  ctx.translate(-baseX, -baseY);
+
+  const lastIdx = tower.length - 1;
+  for(let i=0;i<tower.length;i++){
+    const t = tower[i];
+    const topY = t.y + t.h;
+    if(topY < cameraY - 60) continue;              // 階段三:視野外只留資料不繪製
+    if(t.y > cameraY + VIEW_H + 60) continue;
+    const sx = wx(t.x - t.w/2), sy = wy(t.y + t.h);
+    drawBlock(sx, sy, t.w, t.h, {
+      isBase: t.isBase,
+      perfectGlow: t.perfect && i === lastIdx,
+    });
+  }
+  ctx.restore();
+}
+
+/* ---------- 其他動態物件 ---------- */
+function drawFalling(){
+  if(!fallingBlock) return;
+  const sx = wx(fallingBlock.x - BLOCK_W/2), sy = wy(fallingBlock.y + BLOCK_H);
+  drawBlock(sx, sy, BLOCK_W, BLOCK_H, {});
+}
+function drawMissBlocks(){
+  for(const b of missBlocks){
+    ctx.save();
+    ctx.translate(wx(b.x), wy(b.y + b.h/2));
+    ctx.rotate(b.rot);
+    drawBlock(-b.w/2, -b.h/2, b.w, b.h, {});
+    ctx.restore();
+  }
+}
+function drawStars(){
+  for(const s of stars){
+    const a = 1 - s.t/s.life;
+    ctx.globalAlpha = a;
+    const size = s.big ? 7 : 5;
+    rect(wx(s.x)-size/2, wy(s.y)-size/2, size, size, s.big ? C.goldLight : C.gold);
+  }
+  ctx.globalAlpha = 1;
+}
+function drawParachuter(){
+  if(!parachuter) return;
+  const px = wx(parachuter.x), py = wy(parachuter.y);
+  // 藍傘
+  ctx.fillStyle = '#3a6ea8';
+  ctx.beginPath(); ctx.arc(px, py, 9, Math.PI, 0); ctx.fill();
+  ctx.strokeStyle = '#1c1c1c'; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(px-8, py); ctx.lineTo(px, py+8); ctx.moveTo(px+8, py); ctx.lineTo(px, py+8); ctx.stroke();
+  // 黑色小人
+  rect(px-2, py+8, 4, 4, '#1c1c1c');
+  rect(px-2, py+12, 4, 5, '#1c1c1c');
+}
+
+/* ---------- Game Over 遮罩 ---------- */
+function drawGameOverMask(){
+  if(gameState !== 'gameover') return;
+  ctx.fillStyle = 'rgba(44,52,60,.6)';
+  ctx.fillRect(0, 0, viewW, VIEW_H);
+}
+
+/* ---------- 主迴圈 ---------- */
+function frame(now){
+  const dt = Math.min((now - lastTime)/1000, 0.05);
+  lastTime = now;
+  update(dt);
+
+  ctx.setTransform(scale, 0, 0, scale, 0, 0);
+  drawBackground();
+  drawTower();
+  drawMissBlocks();
+  drawFalling();
+  if(gameState === 'playing' || gameState === 'menu') drawCrane();
+  drawStars();
+  drawParachuter();
+  drawGameOverMask();
+
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>
