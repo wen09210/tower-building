@@ -4,6 +4,8 @@
 
 以 **HTML5 Canvas + 原生 JavaScript** 實作,單一 `index.html` 即可執行,無任何外部依賴(字型除外)。
 
+### 🎮 [線上遊玩 → wen09210.github.io/tower-building](https://wen09210.github.io/tower-building/)
+
 ![遊戲畫面](screenshots/03-screen.png)
 
 ## 遊戲玩法
