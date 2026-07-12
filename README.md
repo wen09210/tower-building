@@ -5,6 +5,7 @@
 以 **HTML5 Canvas + 原生 JavaScript** 實作,單一 `index.html` 即可執行,無任何外部依賴(字型除外)。
 
 ### 🎮 [線上遊玩 → wen09210.github.io/tower-building](https://wen09210.github.io/tower-building/)
+### 📖 [玩法簡報(網頁 PPT)→ slides.html](https://wen09210.github.io/tower-building/slides.html)
 
 ![遊戲畫面](screenshots/03-screen.png)
 
@@ -49,6 +50,7 @@ python3 -m http.server 8931
 | 檔案 | 說明 |
 | --- | --- |
 | `index.html` | 遊戲本體(Canvas 渲染 + 遊戲邏輯 + UI,單一檔案) |
+| `slides.html` | 玩法簡報(網頁 PPT,方向鍵/點擊/滑動翻頁) |
 | `DESIGN.md` | 設計交接文件(視覺 token、畫面規格、四階段開發需求) |
 | `疊房子遊戲 設計稿.dc.html` / `support.js` | HTML 設計參考稿(僅供比對,非產品程式碼) |
 | `screenshots/` | 設計稿各畫面截圖 |

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>疊疊大樓 玩法簡報</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cubic+11&family=DotGothic16&family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --sky:#b7e2f4; --ink:#2c3e50; --ui:#3a4148;
+    --yellow:#e8a428; --yellow-dark:#8a5a10; --gold:#f2c218;
+    --panel:#e6e8ea; --panel-border:#6a7074; --panel-shadow:#4a5054;
+  }
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html,body{ width:100%; height:100%; overflow:hidden;
+    font-family:'Cubic 11','DotGothic16',monospace; background:var(--sky);
+    -webkit-user-select:none; user-select:none; }
+
+  /* 背景大樓剪影 */
+  .bg{ position:fixed; inset:0; z-index:0; pointer-events:none; }
+  .bg div{ position:absolute; bottom:0; }
+
+  .deck{ position:fixed; inset:0; z-index:1; display:flex;
+    align-items:center; justify-content:center; cursor:pointer; }
+  .slide{ display:none; width:min(680px, 92vw); background:var(--panel);
+    border:4px solid var(--panel-border); box-shadow:0 8px 0 var(--panel-shadow);
+    padding:0 0 34px; text-align:center; }
+  .slide.active{ display:block; animation:pop .25s ease-out; }
+  @keyframes pop{ from{ transform:translateY(14px); opacity:0; } to{ transform:none; opacity:1; } }
+
+  .slide h1{ background:var(--yellow); border-bottom:4px solid var(--yellow-dark);
+    color:#3a2a08; font-weight:normal; font-size:clamp(22px,4.5vw,30px);
+    letter-spacing:6px; padding:16px 10px; margin-bottom:26px; }
+  .slide .body{ padding:0 34px; font-size:clamp(15px,2.6vw,19px); color:var(--ui);
+    line-height:2; letter-spacing:1px; text-align:left; }
+  .slide .body.center{ text-align:center; }
+  .slide .en{ font-family:'Press Start 2P',monospace; font-size:10px; color:#b87c14;
+    letter-spacing:5px; margin-top:6px; }
+  b{ color:#c98a10; font-weight:normal; }
+  .gold{ color:var(--gold); text-shadow:1px 1px 0 var(--yellow-dark); }
+
+  .key{ display:inline-block; background:#fff; border:2px solid var(--panel-border);
+    border-radius:9px; padding:0 10px; font-size:.85em; }
+  table{ width:100%; border-collapse:collapse; margin:8px 0; font-size:.92em; }
+  th,td{ border:2px solid var(--panel-border); padding:7px 10px; text-align:center; line-height:1.5; }
+  th{ background:#d3d7da; }
+
+  /* 像素方塊插圖 */
+  .blk{ width:86px; height:86px; margin:2px auto 18px; position:relative;
+    background:linear-gradient(90deg,#f6bc48 0 9px,#eaa82c 9px 68%,#d98f1a 68% 88%,#b87814 88% 100%);
+    border:3px solid var(--yellow-dark); box-shadow:inset 0 -7px 0 rgba(122,74,8,.4); }
+  .blk::before{ content:''; position:absolute; left:0; right:0; top:0; height:7px;
+    background:linear-gradient(#eceeef,#b4b8ba); }
+  .blk .win{ position:absolute; top:26px; width:19px; height:34px; background:#24486a;
+    border:2px solid #c4c8ca; }
+  .blk .win i{ position:absolute; inset:2px 50% 2px 2px; background:#8ec2e8; }
+  .blk .win em{ position:absolute; inset:2px 2px 2px 50%; background:#a9d4f2; }
+  .blk .w1{ left:13px; } .blk .w2{ right:13px; }
+
+  .btn{ display:inline-block; font-family:inherit; font-size:19px; letter-spacing:4px;
+    background:var(--yellow); color:#3a2a08; border:3px solid var(--yellow-dark);
+    box-shadow:0 4px 0 var(--yellow-dark); padding:12px 32px; margin-top:20px;
+    text-decoration:none; cursor:pointer; }
+  .btn:active{ transform:translateY(3px); box-shadow:0 1px 0 var(--yellow-dark); }
+
+  .nav{ position:fixed; left:0; right:0; bottom:14px; z-index:2; text-align:center;
+    font-size:13px; color:var(--ui); letter-spacing:2px; }
+  .dots{ margin-bottom:8px; }
+  .dots i{ display:inline-block; width:10px; height:10px; margin:0 4px;
+    background:#fff; border:2px solid var(--panel-border); }
+  .dots i.on{ background:var(--gold); border-color:var(--yellow-dark); }
+</style>
+</head>
+<body>
+<div class="bg" id="bg"></div>
+
+<div class="deck" id="deck">
+
+  <!-- 1 封面 -->
+  <section class="slide active">
+    <h1>疊疊大樓</h1>
+    <div class="body center">
+      <div class="en">CITY BLOXX — HOW TO PLAY</div>
+      <div class="blk" style="margin-top:22px"><span class="win w1"><i></i><em></em></span><span class="win w2"><i></i><em></em></span></div>
+      像素風疊房子街機遊戲<br>
+      抓準時機放下方塊,把大樓疊上天際!
+    </div>
+  </section>
+
+  <!-- 2 操作 -->
+  <section class="slide">
+    <h1>操作方式</h1>
+    <div class="body center">
+      吊車掛勾會左右擺動,方塊跟著晃──<br>
+      在它盪到<b>塔的正上方</b>時出手!<br><br>
+      🖱️ 電腦:按 <span class="key">空白鍵</span> 或點擊畫面<br>
+      📱 手機:點擊畫面<br><br>
+      方塊會受重力落下,疊到塔頂就是新的一層。
+    </div>
+  </section>
+
+  <!-- 3 判定 -->
+  <section class="slide">
+    <h1>落點判定</h1>
+    <div class="body">
+      <table>
+        <tr><th>判定</th><th>條件</th><th>結果</th></tr>
+        <tr><td class="gold">PERFECT!</td><td>幾乎完全對齊<br>(偏差 ≤ 5px)</td><td>自動吸正+星星特效<br>連擊加成</td></tr>
+        <tr><td>一般疊放</td><td>有重疊但歪了</td><td>+100 分<br>整棟塔會左右晃動</td></tr>
+        <tr><td>失誤 💥</td><td>偏超過方塊一半</td><td>方塊滑落,扣 1 命<br>(共 3 條命)</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <!-- 4 計分 -->
+  <section class="slide">
+    <h1>連擊與計分</h1>
+    <div class="body center">
+      每疊一層 <b>+100 分</b><br><br>
+      連續 PERFECT 會累積<span class="gold">連擊 ×N</span>:<br>
+      加分越疊越多(+200、+300⋯),金幣也拿更多<br><br>
+      歪一次連擊就歸零──<br>穩,比快更重要!
+    </div>
+  </section>
+
+  <!-- 5 技巧 -->
+  <section class="slide">
+    <h1>小技巧</h1>
+    <div class="body">
+      ✦ 盯著<b>塔頂中心</b>而不是方塊,在擺到正上方前一瞬出手<br>
+      ✦ 塔晃動時先等它穩下來再放,不要硬跟<br>
+      ✦ 越疊越高,擺動會<b>越來越快、越來越大</b>,節奏要跟著調整<br>
+      ✦ 連擊夠高時,留意天上撐傘飄落的小人 🪂(彩蛋!)
+    </div>
+  </section>
+
+  <!-- 6 CTA -->
+  <section class="slide">
+    <h1>開始挑戰</h1>
+    <div class="body center">
+      目標:更高的樓層、更長的連擊、更多金幣!<br>
+      <a class="btn" href="https://wen09210.github.io/tower-building/">🎮 立即遊玩</a><br>
+      <div class="en" style="margin-top:24px">GOOD LUCK, BUILDER!</div>
+    </div>
+  </section>
+</div>
+
+<div class="nav">
+  <div class="dots" id="dots"></div>
+  ← → 方向鍵或點擊翻頁
+</div>
+
+<script>
+'use strict';
+/* 背景大樓剪影(與遊戲同風格,固定種子) */
+(function(){
+  let seed = 20260712;
+  const rnd = () => { seed = (seed*1103515245+12345) & 0x7fffffff; return seed/0x7fffffff; };
+  const colors = ['#cdd7db','#9fabb3','#d8d3c4','#8b9aa5','#b9c3c9'];
+  const bg = document.getElementById('bg');
+  let x = -4;
+  while(x < 104){
+    const w = 5 + rnd()*9, h = 18 + rnd()*55;
+    const d = document.createElement('div');
+    d.style.cssText = `left:${x}vw;width:${w}vw;height:${h}vh;background:${colors[Math.floor(rnd()*colors.length)]}`;
+    if(rnd() < .4){
+      const a = document.createElement('div');
+      a.style.cssText = `left:${x+w/2}vw;width:3px;height:${h+4}vh;background:inherit;
+        background:${d.style.background};border-top:4px solid #e04838`;
+      bg.appendChild(a);
+    }
+    bg.appendChild(d);
+    x += w + rnd()*3;
+  }
+})();
+
+/* 翻頁 */
+const slides = [...document.querySelectorAll('.slide')];
+const dots = document.getElementById('dots');
+slides.forEach(()=> dots.appendChild(document.createElement('i')));
+let cur = 0;
+function show(n){
+  cur = Math.max(0, Math.min(slides.length-1, n));
+  slides.forEach((s,i)=> s.classList.toggle('active', i===cur));
+  [...dots.children].forEach((d,i)=> d.classList.toggle('on', i===cur));
+}
+show(0);
+document.getElementById('deck').addEventListener('click', e => {
+  if(e.target.closest('a')) return;
+  show(cur + (e.clientX < innerWidth*0.3 ? -1 : 1));
+});
+addEventListener('keydown', e => {
+  if(['ArrowRight','Right',' ','Enter','PageDown'].includes(e.key)) show(cur+1);
+  if(['ArrowLeft','Left','PageUp'].includes(e.key)) show(cur-1);
+});
+let tx = null;
+addEventListener('touchstart', e => tx = e.touches[0].clientX);
+addEventListener('touchend', e => {
+  if(tx===null) return;
+  const dx = e.changedTouches[0].clientX - tx;
+  if(Math.abs(dx) > 40) show(cur + (dx<0?1:-1));
+  tx = null;
+});
+</script>
+</body>
+</html>
