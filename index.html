@@ -49,6 +49,9 @@
   #menu-sub{ font-family:'Press Start 2P',monospace; font-size:8px; color:#b87c14;
     letter-spacing:6px; margin-bottom:110px; }
   #menu .pix-btn{ margin-bottom:14px; }
+  #menu-name-input{ font-family:inherit; font-size:15px; padding:9px 14px; margin-bottom:14px;
+    border:2px solid #6a7074; letter-spacing:2px; text-align:center; background:#fff;
+    color:var(--ui-text); width:190px; }
 
   /* ---------- HUD ---------- */
   #hud{ position:absolute; inset:0; pointer-events:none; }
@@ -131,10 +134,6 @@
   .lb-list .lb-name{ flex:1; padding:0 6px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   .lb-list .lb-score{ font-weight:bold; }
   .lb-empty{ justify-content:center; color:#8b9296; }
-  #go-name-row{ display:flex; gap:6px; margin:0 22px 12px; }
-  #go-name-input{ flex:1; min-width:0; font-family:inherit; font-size:13px; padding:6px 8px;
-    border:2px solid #6a7074; letter-spacing:1px; background:#fff; color:var(--ui-text); }
-  #go-save-btn{ font-size:13px; padding:6px 14px; margin:0; white-space:nowrap; }
   #go-saved-msg{ font-size:12px; color:#3a9a52; margin:0 22px 10px; letter-spacing:1px; }
 </style>
 </head>
@@ -146,6 +145,7 @@
   <div id="menu" class="overlay">
     <div id="menu-title">疊疊大樓</div>
     <div id="menu-sub">CITY BLOXX</div>
+    <input id="menu-name-input" type="text" maxlength="10" placeholder="輸入暱稱">
     <button id="btn-start" class="pix-btn">開始遊戲</button>
     <button id="btn-leaderboard" class="pix-btn secondary">🏆 排行榜</button>
     <button id="btn-sound" class="pix-btn secondary">♪ 音效:開</button>
@@ -186,10 +186,6 @@
         <div class="go-row"><span>最高連擊</span><b id="go-combo">×0</b></div>
         <div class="go-row"><span>樓層高度</span><b id="go-floor">0 F</b></div>
         <div class="go-row"><span>獲得金幣</span><b id="go-coins">$ 0</b></div>
-      </div>
-      <div id="go-name-row" class="hidden">
-        <input id="go-name-input" type="text" maxlength="10" placeholder="輸入暱稱">
-        <button id="go-save-btn" class="pix-btn secondary">存入排行榜</button>
       </div>
       <div id="go-saved-msg" class="hidden">✓ 已存入排行榜！</div>
       <div id="go-lb-title">排行榜 TOP 10</div>
@@ -312,16 +308,13 @@ $('btn-restart').addEventListener('click', e => { e.stopPropagation(); sfx.click
 $('go-menu-link').addEventListener('click', e => { e.stopPropagation(); sfx.click(); toMenu(); });
 $('btn-leaderboard').addEventListener('click', e => { e.stopPropagation(); sfx.click(); openLeaderboard(); });
 $('lb-close-link').addEventListener('click', e => { e.stopPropagation(); sfx.click(); closeLeaderboard(); });
-$('go-save-btn').addEventListener('click', e => { e.stopPropagation(); sfx.click(); saveCurrentScore(); });
-$('go-name-input').addEventListener('keydown', e => {
-  e.stopPropagation();
-  if(e.key === 'Enter'){ e.preventDefault(); saveCurrentScore(); }
-});
 
 /* ---------- 排行榜 ---------- */
 const LB_KEY = 'towerBloxxLeaderboard';
 const LB_NAME_KEY = 'towerBloxxLastName';
 const LB_MAX = 10;
+let playerName = localStorage.getItem(LB_NAME_KEY) || '';
+$('menu-name-input').value = playerName;
 
 function loadLeaderboard(){
   try{
@@ -331,10 +324,6 @@ function loadLeaderboard(){
 }
 function saveLeaderboardList(list){
   try{ localStorage.setItem(LB_KEY, JSON.stringify(list)); }catch(e){}
-}
-function qualifiesForLeaderboard(s){
-  const list = loadLeaderboard();
-  return list.length < LB_MAX || s > list[list.length-1].score;
 }
 function addToLeaderboard(name, s, floor){
   const list = loadLeaderboard();
@@ -360,14 +349,6 @@ function renderLeaderboard(ulEl, list, highlightEntry){
     li.innerHTML = `<span class="lb-rank">${i+1}</span><span class="lb-name">${escapeHtml(e.name)}</span><span class="lb-score">${e.score}</span>`;
     ulEl.appendChild(li);
   });
-}
-function saveCurrentScore(){
-  const name = $('go-name-input').value.trim() || '玩家';
-  localStorage.setItem(LB_NAME_KEY, name);
-  const { list, entry, kept } = addToLeaderboard(name, score, floorCount);
-  renderLeaderboard($('lb-list'), list, kept ? entry : null);
-  $('go-name-row').classList.add('hidden');
-  $('go-saved-msg').classList.remove('hidden');
 }
 function openLeaderboard(){
   renderLeaderboard($('lb-list-menu'), loadLeaderboard(), null);
@@ -398,6 +379,8 @@ addEventListener('keydown', e => {
 
 /* ---------- 流程 ---------- */
 function startGame(){
+  playerName = $('menu-name-input').value.trim() || '玩家';
+  localStorage.setItem(LB_NAME_KEY, playerName);
   gameState = 'playing';
   tower = [{ x:0, y:0, w:BASE_W, h:BASE_H, perfect:false, isBase:true }];
   score = 0; combo = 0; maxCombo = 0; coins = 0; lives = 3; floorCount = 0;
@@ -432,14 +415,9 @@ function gameOver(){
   $('go-floor').textContent = floorCount + ' F';
   $('go-coins').textContent = '$ ' + coins;
 
-  $('go-saved-msg').classList.add('hidden');
-  if(qualifiesForLeaderboard(score)){
-    $('go-name-row').classList.remove('hidden');
-    $('go-name-input').value = localStorage.getItem(LB_NAME_KEY) || '';
-  }else{
-    $('go-name-row').classList.add('hidden');
-  }
-  renderLeaderboard($('lb-list'), loadLeaderboard(), null);
+  const { list, entry, kept } = addToLeaderboard(playerName, score, floorCount);
+  $('go-saved-msg').classList.toggle('hidden', !kept);
+  renderLeaderboard($('lb-list'), list, kept ? entry : null);
 
   setTimeout(()=>{
     hudEl.classList.add('hidden');
