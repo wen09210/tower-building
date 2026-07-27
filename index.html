@@ -103,11 +103,11 @@
     letter-spacing:3px; }
 
   /* ---------- Game Over ---------- */
-  #gameover-dialog{
-    width:262px; background:#e6e8ea; border:4px solid #6a7074;
+  .pix-dialog{
+    width:280px; background:#e6e8ea; border:4px solid #6a7074;
     box-shadow:0 6px 0 #4a5054; text-align:center;
   }
-  #gameover-dialog h2{
+  .pix-dialog h2{
     background:var(--btn-yellow); border-bottom:4px solid var(--btn-dark);
     color:#3a2a08; font-size:24px; font-weight:normal; letter-spacing:8px; padding:12px 0;
   }
@@ -115,9 +115,27 @@
   .go-row{ display:flex; justify-content:space-between; font-size:14px;
     color:var(--ui-text); margin-bottom:11px; letter-spacing:2px; }
   .go-row b{ color:#c98a10; font-weight:normal; }
-  #gameover-dialog .pix-btn{ font-size:17px; padding:10px 26px; margin:8px 0 4px; }
-  #go-menu-link{ display:block; font-size:13px; color:var(--ui-text); margin:8px 0 16px;
+  .pix-dialog .pix-btn{ font-size:17px; padding:10px 26px; margin:8px 0 4px; }
+  .link-text{ display:block; font-size:13px; color:var(--ui-text); margin:8px 0 16px;
     text-decoration:underline; cursor:pointer; letter-spacing:2px; }
+
+  /* ---------- 排行榜 ---------- */
+  #go-lb-title{ font-size:13px; color:var(--ui-text); letter-spacing:3px; margin:6px 0 8px; }
+  .lb-list{ list-style:none; max-height:180px; overflow-y:auto; text-align:left;
+    font-size:12px; color:var(--ui-text); margin:0 22px 14px; padding:0; border:2px solid #d8dadc; }
+  .lb-list li{ display:flex; align-items:center; padding:5px 8px; letter-spacing:1px; }
+  .lb-list li:nth-child(odd){ background:#f2f3f4; }
+  .lb-list li.me{ background:var(--gold); color:#3a2a08; }
+  .lb-list .lb-rank{ width:20px; color:#8b9296; }
+  .lb-list li.me .lb-rank{ color:#3a2a08; }
+  .lb-list .lb-name{ flex:1; padding:0 6px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .lb-list .lb-score{ font-weight:bold; }
+  .lb-empty{ justify-content:center; color:#8b9296; }
+  #go-name-row{ display:flex; gap:6px; margin:0 22px 12px; }
+  #go-name-input{ flex:1; min-width:0; font-family:inherit; font-size:13px; padding:6px 8px;
+    border:2px solid #6a7074; letter-spacing:1px; background:#fff; color:var(--ui-text); }
+  #go-save-btn{ font-size:13px; padding:6px 14px; margin:0; white-space:nowrap; }
+  #go-saved-msg{ font-size:12px; color:#3a9a52; margin:0 22px 10px; letter-spacing:1px; }
 </style>
 </head>
 <body>
@@ -129,7 +147,18 @@
     <div id="menu-title">疊疊大樓</div>
     <div id="menu-sub">CITY BLOXX</div>
     <button id="btn-start" class="pix-btn">開始遊戲</button>
+    <button id="btn-leaderboard" class="pix-btn secondary">🏆 排行榜</button>
     <button id="btn-sound" class="pix-btn secondary">♪ 音效:開</button>
+  </div>
+
+  <!-- 排行榜(主選單查看) -->
+  <div id="leaderboard" class="overlay hidden">
+    <div id="leaderboard-dialog" class="pix-dialog">
+      <h2>排行榜</h2>
+      <div id="go-lb-title">TOP 10</div>
+      <ul id="lb-list-menu" class="lb-list"></ul>
+      <span id="lb-close-link" class="link-text">返回選單</span>
+    </div>
   </div>
 
   <!-- HUD -->
@@ -150,7 +179,7 @@
 
   <!-- Game Over -->
   <div id="gameover" class="overlay hidden">
-    <div id="gameover-dialog">
+    <div id="gameover-dialog" class="pix-dialog">
       <h2>遊戲結束</h2>
       <div id="go-stats">
         <div class="go-row"><span>最終得分</span><b id="go-score">0</b></div>
@@ -158,8 +187,15 @@
         <div class="go-row"><span>樓層高度</span><b id="go-floor">0 F</b></div>
         <div class="go-row"><span>獲得金幣</span><b id="go-coins">$ 0</b></div>
       </div>
+      <div id="go-name-row" class="hidden">
+        <input id="go-name-input" type="text" maxlength="10" placeholder="輸入暱稱">
+        <button id="go-save-btn" class="pix-btn secondary">存入排行榜</button>
+      </div>
+      <div id="go-saved-msg" class="hidden">✓ 已存入排行榜！</div>
+      <div id="go-lb-title">排行榜 TOP 10</div>
+      <ul id="lb-list" class="lb-list"></ul>
       <button id="btn-restart" class="pix-btn">重新開始</button>
-      <span id="go-menu-link">回主選單</span>
+      <span id="go-menu-link" class="link-text">回主選單</span>
     </div>
   </div>
 </div>
@@ -259,7 +295,7 @@ const sfx = {
 
 /* ---------- DOM ---------- */
 const $ = id => document.getElementById(id);
-const menuEl = $('menu'), hudEl = $('hud'), goEl = $('gameover');
+const menuEl = $('menu'), hudEl = $('hud'), goEl = $('gameover'), lbEl = $('leaderboard');
 const comboBarWrap = $('combo-bar-wrap'), comboBar = $('combo-bar'), comboMult = $('combo-mult');
 const coinNum = $('coin-num'), coinFloat = $('coin-float');
 const livesBox = $('lives-box'), floorBox = $('floor-box'), timerBox = $('timer-box'), hintBox = $('hint-box');
@@ -274,6 +310,74 @@ $('btn-sound').addEventListener('click', e => {
 });
 $('btn-restart').addEventListener('click', e => { e.stopPropagation(); sfx.click(); startGame(); });
 $('go-menu-link').addEventListener('click', e => { e.stopPropagation(); sfx.click(); toMenu(); });
+$('btn-leaderboard').addEventListener('click', e => { e.stopPropagation(); sfx.click(); openLeaderboard(); });
+$('lb-close-link').addEventListener('click', e => { e.stopPropagation(); sfx.click(); closeLeaderboard(); });
+$('go-save-btn').addEventListener('click', e => { e.stopPropagation(); sfx.click(); saveCurrentScore(); });
+$('go-name-input').addEventListener('keydown', e => {
+  e.stopPropagation();
+  if(e.key === 'Enter'){ e.preventDefault(); saveCurrentScore(); }
+});
+
+/* ---------- 排行榜 ---------- */
+const LB_KEY = 'towerBloxxLeaderboard';
+const LB_NAME_KEY = 'towerBloxxLastName';
+const LB_MAX = 10;
+
+function loadLeaderboard(){
+  try{
+    const list = JSON.parse(localStorage.getItem(LB_KEY) || '[]');
+    return Array.isArray(list) ? list : [];
+  }catch(e){ return []; }
+}
+function saveLeaderboardList(list){
+  try{ localStorage.setItem(LB_KEY, JSON.stringify(list)); }catch(e){}
+}
+function qualifiesForLeaderboard(s){
+  const list = loadLeaderboard();
+  return list.length < LB_MAX || s > list[list.length-1].score;
+}
+function addToLeaderboard(name, s, floor){
+  const list = loadLeaderboard();
+  const entry = { name:(name || '玩家').slice(0,10), score:s, floor };
+  list.push(entry);
+  list.sort((a,b) => b.score - a.score);
+  if(list.length > LB_MAX) list.length = LB_MAX;
+  saveLeaderboardList(list);
+  return { list, entry, kept: list.includes(entry) };
+}
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function renderLeaderboard(ulEl, list, highlightEntry){
+  ulEl.innerHTML = '';
+  if(!list.length){
+    ulEl.innerHTML = '<li class="lb-empty">尚無紀錄</li>';
+    return;
+  }
+  list.forEach((e, i) => {
+    const li = document.createElement('li');
+    if(e === highlightEntry) li.className = 'me';
+    li.innerHTML = `<span class="lb-rank">${i+1}</span><span class="lb-name">${escapeHtml(e.name)}</span><span class="lb-score">${e.score}</span>`;
+    ulEl.appendChild(li);
+  });
+}
+function saveCurrentScore(){
+  const name = $('go-name-input').value.trim() || '玩家';
+  localStorage.setItem(LB_NAME_KEY, name);
+  const { list, entry, kept } = addToLeaderboard(name, score, floorCount);
+  renderLeaderboard($('lb-list'), list, kept ? entry : null);
+  $('go-name-row').classList.add('hidden');
+  $('go-saved-msg').classList.remove('hidden');
+}
+function openLeaderboard(){
+  renderLeaderboard($('lb-list-menu'), loadLeaderboard(), null);
+  menuEl.classList.add('hidden');
+  lbEl.classList.remove('hidden');
+}
+function closeLeaderboard(){
+  lbEl.classList.add('hidden');
+  menuEl.classList.remove('hidden');
+}
 
 /* ---------- 輸入 ---------- */
 function onAction(){
@@ -288,6 +392,7 @@ addEventListener('pointerdown', e => {
   if(gameState === 'playing' && !e.target.closest('button')) onAction();
 });
 addEventListener('keydown', e => {
+  if(e.target && /INPUT|TEXTAREA/.test(e.target.tagName)) return;
   if(e.code === 'Space'){ e.preventDefault(); onAction(); }
 });
 
@@ -326,6 +431,16 @@ function gameOver(){
   $('go-combo').textContent = '×' + maxCombo;
   $('go-floor').textContent = floorCount + ' F';
   $('go-coins').textContent = '$ ' + coins;
+
+  $('go-saved-msg').classList.add('hidden');
+  if(qualifiesForLeaderboard(score)){
+    $('go-name-row').classList.remove('hidden');
+    $('go-name-input').value = localStorage.getItem(LB_NAME_KEY) || '';
+  }else{
+    $('go-name-row').classList.add('hidden');
+  }
+  renderLeaderboard($('lb-list'), loadLeaderboard(), null);
+
   setTimeout(()=>{
     hudEl.classList.add('hidden');
     goEl.classList.remove('hidden');
